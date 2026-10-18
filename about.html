@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSMUT About Us · Building Infrastructure, Connecting Markets</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        darkBg: '#0f1013',
+                        cardBg: '#17181c',
+                        glassBg: 'rgba(255, 255, 255, 0.08)',
+                        glassBorder: 'rgba(255, 255, 255, 0.15)',
+                        glassPill: 'rgba(255, 255, 255, 0.12)',
+                        mutedText: '#a0a5ad'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f1013;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Frosted Glass UI Utilities */
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-pill:hover {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .glass-pill.active {
+            background: #ffffff;
+            color: #0f1013;
+            border-color: #ffffff;
+            font-weight: 600;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1013;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Subtle floating animation for hero badges */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+        .float-badge {
+            animation: float 5s ease-in-out infinite;
+        }
+        .float-badge-delay {
+            animation: float 6s ease-in-out infinite;
+            animation-delay: 1s;
+        }
+
+        /* Value card icon glow */
+        .value-icon {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover .value-icon {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Timeline style for "Why Choose Us" */
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.35rem;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.3), rgba(255,255,255,0.05));
+        }
+        .timeline-item:last-child::before {
+            background: transparent;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -4px;
+            top: 0.35rem;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
+        }
+
+        /* Smooth image reveal */
+        .reveal-img {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+        }
+        .reveal-img:hover {
+            transform: scale(1.03);
+        }
+
+        /* ========== MOBILE NAVIGATION STYLES ========== */
+
+        /* Hamburger button */
+        .mobile-menu-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mobile-menu-btn:hover,
+        .mobile-menu-btn.active {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        /* Hamburger lines */
+        .hamburger-line {
+            display: block;
+            width: 20px;
+            height: 1.5px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: center;
+        }
+        .mobile-menu-btn.active .hamburger-line:nth-child(1) {
+            transform: translateY(6.5px) rotate(45deg);
+        }
+        .mobile-menu-btn.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .mobile-menu-btn.active .hamburger-line:nth-child(3) {
+            transform: translateY(-6.5px) rotate(-45deg);
+        }
+
+        /* Mobile menu overlay */
+        .mobile-menu-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 45;
+            background: rgba(10, 11, 14, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .mobile-menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Mobile menu panel */
+        .mobile-menu-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 380px;
+            z-index: 46;
+            background: rgba(23, 24, 28, 0.97);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-left: 1px solid rgba(255, 255, 255, 0.12);
+            transform: translateX(100%);
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .mobile-menu-panel.open {
+            transform: translateX(0);
+        }
+
+        /* Mobile menu links */
+        .mobile-nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 1.05rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            transition: all 0.25s ease;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease, color 0.25s ease, padding-left 0.25s ease;
+        }
+        .mobile-nav-link:hover,
+        .mobile-nav-link:active {
+            color: #ffffff;
+            padding-left: 0.5rem;
+        }
+        .mobile-nav-link i {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.35);
+            transition: all 0.25s ease;
+        }
+        .mobile-nav-link:hover i {
+            color: #ffffff;
+            transform: translateX(4px);
+        }
+        .mobile-nav-link.active {
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .mobile-nav-link.active i {
+            color: #ffffff;
+        }
+
+        /* Staggered link animation */
+        .mobile-menu-panel.open .mobile-nav-link {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(1) { transition-delay: 0.06s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(2) { transition-delay: 0.10s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(3) { transition-delay: 0.14s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(4) { transition-delay: 0.18s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(5) { transition-delay: 0.22s; }
+
+        /* Prevent body scroll when menu open */
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* Mobile menu footer */
+        .mobile-menu-footer {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease 0.3s, transform 0.4s ease 0.3s;
+        }
+        .mobile-menu-panel.open .mobile-menu-footer {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-white selection:text-black">
+
+    <!-- ========== TOP NAVIGATION HEADER ========== -->
+    <header class="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 py-5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-3 text-white font-bold text-xl tracking-wider">
+                <div class="w-9 h-9 glass-pill rounded-xl flex items-center justify-center text-white border border-white/20">
+                    <i class="fa-solid fa-cubes text-sm"></i>
+                </div>
+                <span>OSMUT</span>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden md:flex items-center gap-1 glass-nav px-6 py-2.5 rounded-full text-sm font-medium text-white/80">
+                <a href="index.html" class="px-4 py-1 hover:text-white transition">Home</a>
+                <span class="text-white/20">|</span>
+                <a href="sectors.html" class="px-4 py-1 hover:text-white transition">Sectors</a>
+                <span class="text-white/20">|</span>
+                <a href="projects.html" class="px-4 py-1 hover:text-white transition">Projects</a>
+                <span class="text-white/20">|</span>
+                <a href="about.html" class="px-4 py-1 text-white font-semibold border-b-2 border-white/70">About Us</a>
+                <span class="text-white/20">|</span>
+                <a href="contact.html" class="px-4 py-1 hover:text-white transition">Contact Us</a>
+            </nav>
+
+            <!-- Desktop Book a Call Button -->
+            <a href="./Booking.html" class="hidden md:flex items-center gap-3 bg-white text-darkBg px-5 py-2.5 rounded-full font-semibold text-sm hover:bg-white/90 transition shadow-lg group">
+                <span>BOOK A CALL</span>
+                <div class="w-6 h-6 rounded-full bg-darkBg text-white flex items-center justify-center text-xs group-hover:rotate-45 transition-transform duration-300">
+                    <i class="fa-solid fa-arrow-up-right"></i>
+                </div>
+            </a>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="mobileMenuBtn" onclick="toggleMobileMenu()" 
+                    class="mobile-menu-btn md:hidden flex flex-col items-center justify-center gap-[5px] w-11 h-11 rounded-xl"
+                    aria-label="Toggle navigation menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ========== MOBILE MENU OVERLAY ========== -->
+    <div id="mobileMenuOverlay" class="mobile-menu-overlay" onclick="closeMobileMenu()"></div>
+
+    <!-- ========== MOBILE MENU PANEL ========== -->
+    <div id="mobileMenuPanel" class="mobile-menu-panel">
+        <div class="flex flex-col h-full p-6">
+            <!-- Panel Header -->
+            <div class="flex items-center justify-between mb-8">
+                <a href="index.html" class="flex items-center gap-3 text-white font-bold text-lg tracking-wider">
+                    <div class="w-9 h-9 glass-pill rounded-xl flex items-center justify-center text-white border border-white/20">
+                        <i class="fa-solid fa-cubes text-sm"></i>
+                    </div>
+                    <span>OSMUT</span>
+                </a>
+                <button onclick="closeMobileMenu()" 
+                        class="w-10 h-10 rounded-xl glass-pill flex items-center justify-center text-white/70 hover:text-white transition"
+                        aria-label="Close menu">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex flex-col">
+                <a href="index.html" class="mobile-nav-link">
+                    <span>Home</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="sectors.html" class="mobile-nav-link">
+                    <span>Sectors</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="projects.html" class="mobile-nav-link">
+                    <span>Projects</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="about.html" class="mobile-nav-link active">
+                    <span>About Us</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="contact.html" class="mobile-nav-link">
+                    <span>Contact Us</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            </nav>
+
+            <!-- Panel Footer: Book a Call + Contact -->
+            <div class="mobile-menu-footer mt-auto pt-8 space-y-5">
+                <!-- Book a Call Button -->
+                <a href="./Booking.html" class="flex items-center justify-between gap-3 bg-white text-darkBg px-5 py-3.5 rounded-full font-semibold text-sm hover:bg-white/90 transition shadow-lg group w-full">
+                    <span>BOOK A CALL</span>
+                    <div class="w-6 h-6 rounded-full bg-darkBg text-white flex items-center justify-center text-xs group-hover:rotate-45 transition-transform duration-300">
+                        <i class="fa-solid fa-arrow-up-right"></i>
+                    </div>
+                </a>
+
+                <!-- Contact quick info -->
+                <div class="space-y-2.5">
+                    <p class="text-xs text-white/50 flex items-center gap-2.5">
+                        <i class="fa-solid fa-location-dot text-white/30 text-[10px] w-3"></i>
+                        Airport Residential Area, Accra, Ghana
+                    </p>
+                    <p class="text-xs text-white/50 flex items-center gap-2.5">
+                        <i class="fa-regular fa-envelope text-white/30 text-[10px] w-3"></i>
+                        info@osmut.com
+                    </p>
+                    <p class="text-xs text-white/50 flex items-center gap-2.5">
+                        <i class="fa-solid fa-phone text-white/30 text-[10px] w-3"></i>
+                        +233 30 274 0000
+                    </p>
+                </div>
+
+                <!-- Social Icons -->
+                <div class="flex gap-2.5 pt-1">
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in text-xs"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="Twitter / X">
+                        <i class="fa-brands fa-x-twitter text-xs"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="Facebook">
+                        <i class="fa-brands fa-facebook-f text-xs"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="Instagram">
+                        <i class="fa-brands fa-instagram text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== HERO / PAGE TITLE ========== -->
+    <section class="relative pt-36 pb-16 px-4 md:px-8 max-w-7xl mx-auto">
+        <div class="absolute inset-0 -z-10 opacity-20">
+            <div class="absolute top-0 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-1/4 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
+        </div>
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div class="max-w-3xl">
+                <span class="text-xs font-mono text-white/50 tracking-wider block mb-2">(01) ABOUT OSMUT</span>
+                <h1 class="text-4xl sm:text-6xl font-light text-white leading-tight">
+                    Building infrastructure.<br>
+                    <span class="font-bold">Connecting markets.</span><br>
+                    <span class="text-white/60">Creating opportunities.</span>
+                </h1>
+                <p class="text-sm text-mutedText leading-relaxed mt-6 max-w-lg">
+                    OSMUT Construction and Investment is a diversified business enterprise committed to delivering quality construction services, facilitating international trade, supplying essential commodities, and creating sustainable investment opportunities across multiple sectors.
+                </p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <span class="glass-pill float-badge px-4 py-2 rounded-full text-xs font-mono text-white/80 flex items-center gap-2">
+                    <i class="fa-solid fa-location-dot text-white/50"></i> Accra, Ghana
+                </span>
+                <span class="glass-pill float-badge-delay px-4 py-2 rounded-full text-xs font-mono text-white/80 flex items-center gap-2">
+                    <i class="fa-regular fa-calendar text-white/50"></i> Est. 2009
+                </span>
+                <span class="glass-pill px-4 py-2 rounded-full text-xs font-mono text-white/80 flex items-center gap-2">
+                    <i class="fa-solid fa-globe text-white/50"></i> West Africa & Global
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== EDITORIAL INTRO / WHO WE ARE ========== -->
+    <section class="px-4 md:px-8 max-w-7xl mx-auto pb-20 border-t border-white/10 pt-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            
+            <!-- Left Column: Sticky Image / Visual -->
+            <div class="lg:col-span-5 relative">
+                <div class="sticky top-32 space-y-6">
+                    <div class="glass-card rounded-3xl overflow-hidden relative group">
+                        <img src="https://i.pinimg.com/736x/38/2e/e9/382ee9e93539f73a69fd43097b592a69.jpg" 
+                             alt="OSMUT construction site" 
+                             class="w-full h-[400px] object-cover opacity-80 group-hover:opacity-100 reveal-img">
+                        <div class="absolute inset-0 bg-gradient-to-t from-darkBg/80 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 right-6">
+                            <span class="glass-pill px-3 py-1.5 rounded-full text-[10px] font-mono tracking-wider">OUR OPERATIONS</span>
+                            <p class="text-sm text-white/80 mt-3 leading-relaxed">From civil engineering to international trade — we deliver excellence across every sector.</p>
+                        </div>
+                    </div>
+
+                    <!-- Mini Stats Grid -->
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="glass-pill rounded-2xl p-4 text-center">
+                            <span class="text-2xl font-bold text-white block">15+</span>
+                            <span class="text-[10px] text-white/50 uppercase tracking-wider">Years</span>
+                        </div>
+                        <div class="glass-pill rounded-2xl p-4 text-center">
+                            <span class="text-2xl font-bold text-white block">240+</span>
+                            <span class="text-[10px] text-white/50 uppercase tracking-wider">Projects</span>
+                        </div>
+                        <div class="glass-pill rounded-2xl p-4 text-center">
+                            <span class="text-2xl font-bold text-white block">6</span>
+                            <span class="text-[10px] text-white/50 uppercase tracking-wider">Sectors</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Editorial Text -->
+            <div class="lg:col-span-7 space-y-8">
+                <div>
+                    <span class="text-xs font-mono text-white/50 tracking-wider block mb-3">OUR IDENTITY</span>
+                    <h2 class="text-3xl md:text-4xl font-light text-white leading-tight">
+                        <strong class="font-bold">OSMUT Construction and Investment</strong> is driven by a deep passion for building resilient infrastructure and empowering regional trade with unyielding integrity and precision.
+                    </h2>
+                </div>
+
+                <div class="space-y-5 text-sm text-mutedText leading-relaxed">
+                    <p>
+                        Our operations span construction, import and export of general merchandise, agricultural products, farm inputs and equipment, cosmetics, food products, and other commercial goods. We are committed to professionalism, integrity, quality, innovation, and long-term business partnerships.
+                    </p>
+                    <p>
+                        Through our diverse business activities, we aim to meet the evolving needs of individuals, businesses, institutions, and corporate organizations in Ghana and international markets. Our diversified business model enables us to explore emerging opportunities, build strategic partnerships, and contribute to economic growth through reliable services and efficient supply chains.
+                    </p>
+                </div>
+
+                <!-- Vision & Mission Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                    <div class="glass-card rounded-2xl p-6">
+                        <div class="value-icon w-10 h-10 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fa-regular fa-eye text-white/70"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-2">Our Vision</h3>
+                        <p class="text-xs text-white/60 leading-relaxed">
+                            To become a trusted and respected diversified business group recognized for excellence in construction, international trade, agriculture, and strategic investments across Ghana and international markets.
+                        </p>
+                    </div>
+                    <div class="glass-card rounded-2xl p-6">
+                        <div class="value-icon w-10 h-10 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fa-solid fa-bullseye text-white/70"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-2">Our Mission</h3>
+                        <p class="text-xs text-white/60 leading-relaxed">
+                            To deliver quality construction services, provide dependable products, develop strategic commercial partnerships, and pursue sustainable investment opportunities that create value for our clients, partners, and communities.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CORE VALUES SECTION ========== -->
+    <section class="py-20 px-4 md:px-8 max-w-7xl mx-auto border-t border-white/10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+            <div>
+                <span class="text-xs font-mono text-white/50 tracking-wider block mb-2">(02) OUR CORE VALUES</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">What drives us forward</h2>
+            </div>
+            <p class="text-sm text-mutedText max-w-md">
+                These principles guide every decision we make, every project we undertake, and every partnership we build.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- Integrity -->
+            <div class="glass-card rounded-3xl p-6">
+                <div class="value-icon w-11 h-11 rounded-xl flex items-center justify-center mb-5">
+                    <i class="fa-solid fa-scale-balanced text-white/70 text-lg"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Integrity</h3>
+                <p class="text-xs text-white/60 leading-relaxed">
+                    We conduct our business with honesty, transparency, and accountability.
+                </p>
+            </div>
+
+            <!-- Quality -->
+            <div class="glass-card rounded-3xl p-6">
+                <div class="value-icon w-11 h-11 rounded-xl flex items-center justify-center mb-5">
+                    <i class="fa-solid fa-gem text-white/70 text-lg"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Quality</h3>
+                <p class="text-xs text-white/60 leading-relaxed">
+                    We strive to deliver reliable products and professional services that meet appropriate standards.
+                </p>
+            </div>
+
+            <!-- Professionalism -->
+            <div class="glass-card rounded-3xl p-6">
+                <div class="value-icon w-11 h-11 rounded-xl flex items-center justify-center mb-5">
+                    <i class="fa-solid fa-user-tie text-white/70 text-lg"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Professionalism</h3>
+                <p class="text-xs text-white/60 leading-relaxed">
+                    We approach our business activities with discipline, competence, and respect for our clients and partners.
+                </p>
+            </div>
+
+            <!-- Innovation -->
+            <div class="glass-card rounded-3xl p-6">
+                <div class="value-icon w-11 h-11 rounded-xl flex items-center justify-center mb-5">
+                    <i class="fa-solid fa-lightbulb text-white/70 text-lg"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Innovation</h3>
+                <p class="text-xs text-white/60 leading-relaxed">
+                    We seek practical solutions and new opportunities to improve our services and expand our business.
+                </p>
+            </div>
+
+            <!-- Customer Satisfaction -->
+            <div class="glass-card rounded-3xl p-6">
+                <div class="value-icon w-11 h-11 rounded-xl flex items-center justify-center mb-5">
+                    <i class="fa-solid fa-face-smile text-white/70 text-lg"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Customer Satisfaction</h3>
+                <p class="text-xs text-white/60 leading-relaxed">
+                    We focus on understanding our customers' needs and building lasting relationships.
+                </p>
+            </div>
+
+            <!-- Sustainable Growth -->
+            <div class="glass-card rounded-3xl p-6">
+                <div class="value-icon w-11 h-11 rounded-xl flex items-center justify-center mb-5">
+                    <i class="fa-solid fa-arrow-trend-up text-white/70 text-lg"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Sustainable Growth</h3>
+                <p class="text-xs text-white/60 leading-relaxed">
+                    We pursue responsible business practices that support long-term commercial success and economic development.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== WHY CHOOSE OSMUT ========== -->
+    <section class="py-20 px-4 md:px-8 max-w-7xl mx-auto border-t border-white/10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            
+            <!-- Left: Heading & Intro -->
+            <div class="lg:col-span-4">
+                <span class="text-xs font-mono text-white/50 tracking-wider block mb-2">(03) WHY CHOOSE OSMUT</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white leading-tight mb-4">
+                    A partner you can trust
+                </h2>
+                <p class="text-sm text-mutedText leading-relaxed mb-8">
+                    Our diversified business interests position us to explore emerging markets, develop new partnerships, and pursue sustainable commercial growth.
+                </p>
+                <a href="sectors.html" class="inline-flex items-center gap-3 border border-white/30 hover:border-white px-6 py-3 rounded-full text-xs font-bold tracking-widest uppercase transition group">
+                    <span>EXPLORE SECTORS</span>
+                    <div class="w-6 h-6 rounded-full bg-white text-darkBg flex items-center justify-center text-xs group-hover:translate-x-1 transition-transform">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Right: Timeline of Reasons -->
+            <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8">
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <h3 class="text-base font-bold text-white mb-2">Diversified Business Expertise</h3>
+                    <p class="text-xs text-white/60 leading-relaxed">
+                        Our presence across multiple sectors allows us to respond to different market needs and explore a broad range of commercial opportunities.
+                    </p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <h3 class="text-base font-bold text-white mb-2">Commitment to Quality</h3>
+                    <p class="text-xs text-white/60 leading-relaxed">
+                        We aim to maintain high standards in our construction services, product sourcing, trading activities, and business relationships.
+                    </p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <h3 class="text-base font-bold text-white mb-2">Reliable Business Partnerships</h3>
+                    <p class="text-xs text-white/60 leading-relaxed">
+                        We value long-term relationships with suppliers, customers, contractors, distributors, and strategic partners.
+                    </p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <h3 class="text-base font-bold text-white mb-2">Customer-Focused Solutions</h3>
+                    <p class="text-xs text-white/60 leading-relaxed">
+                        We work to understand the needs of our clients and provide appropriate services and products.
+                    </p>
+                </div>
+
+                <div class="timeline-item sm:col-span-2">
+                    <div class="timeline-dot"></div>
+                    <h3 class="text-base font-bold text-white mb-2">Growth and Investment Opportunities</h3>
+                    <p class="text-xs text-white/60 leading-relaxed">
+                        Our diversified business interests position us to explore emerging markets, develop new partnerships, and pursue sustainable commercial growth.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== OUR CLIENTS & PARTNERS ========== -->
+    <section class="py-20 px-4 md:px-8 max-w-7xl mx-auto border-t border-white/10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+            <div>
+                <span class="text-xs font-mono text-white/50 tracking-wider block mb-2">(04) CLIENTS & PARTNERS</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Who we work with</h2>
+            </div>
+            <p class="text-sm text-mutedText max-w-md">
+                We believe that strong partnerships are essential to building successful and sustainable businesses.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="glass-pill rounded-2xl p-4 flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full glass-pill flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-landmark text-white/60 text-xs"></i>
+                </div>
+                <span class="text-sm text-white/80">Government institutions & public-sector organizations</span>
+            </div>
+            <div class="glass-pill rounded-2xl p-4 flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full glass-pill flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-building text-white/60 text-xs"></i>
+                </div>
+                <span class="text-sm text-white/80">Private companies & corporate organizations</span>
+            </div>
+            <div class="glass-pill rounded-2xl p-4 flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full glass-pill flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-helmet-safety text-white/60 text-xs"></i>
+                </div>
+                <span class="text-sm text-white/80">Construction contractors & property developers</span>
+            </div>
+            <div class="glass-pill rounded-2xl p-4 flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full glass-pill flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-seedling text-white/60 text-xs"></i>
+                </div>
+                <span class="text-sm text-white/80">Farmers & agricultural enterprises</span>
+            </div>
+            <div class="glass-pill rounded-2xl p-4 flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full glass-pill flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-ship text-white/60 text-xs"></i>
+                </div>
+                <span class="text-sm text-white/80">Importers, exporters, wholesalers & distributors</span>
+            </div>
+            <div class="glass-pill rounded-2xl p-4 flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full glass-pill flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-store text-white/60 text-xs"></i>
+                </div>
+                <span class="text-sm text-white/80">Retailers & commercial traders</span>
+            </div>
+            <div class="glass-pill rounded-2xl p-4 flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full glass-pill flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-utensils text-white/60 text-xs"></i>
+                </div>
+                <span class="text-sm text-white/80">Institutional food suppliers</span>
+            </div>
+            <div class="glass-pill rounded-2xl p-4 flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full glass-pill flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-industry text-white/60 text-xs"></i>
+                </div>
+                <span class="text-sm text-white/80">International manufacturers & suppliers</span>
+            </div>
+            <div class="glass-pill rounded-2xl p-4 flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full glass-pill flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-handshake text-white/60 text-xs"></i>
+                </div>
+                <span class="text-sm text-white/80">Investors & strategic business partners</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== COMMITMENT TO GROWTH & PARTNER WITH US CTA ========== -->
+    <section class="py-20 px-4 md:px-8 max-w-7xl mx-auto border-t border-white/10">
+        <div class="glass-card rounded-3xl p-8 md:p-14 relative overflow-hidden">
+            <!-- Background decorative elements -->
+            <div class="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent"></div>
+            <div class="absolute top-0 right-0 w-80 h-80 bg-white/5 rounded-full blur-3xl -mr-20 -mt-20"></div>
+            <div class="absolute bottom-0 left-0 w-80 h-80 bg-white/5 rounded-full blur-3xl -ml-20 -mb-20"></div>
+            
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                <div class="lg:col-span-8">
+                    <span class="text-xs font-mono text-white/50 tracking-wider block mb-3">(05) OUR COMMITMENT</span>
+                    <h2 class="text-3xl md:text-4xl font-light text-white leading-tight mb-5">
+                        We believe in the power of <strong class="font-bold">diversification, strategic partnerships,</strong> and <strong class="font-bold">responsible investment.</strong>
+                    </h2>
+                    <p class="text-sm text-white/60 leading-relaxed max-w-2xl">
+                        Our business strategy focuses on expanding our commercial reach, strengthening our supply networks, identifying emerging opportunities, and building lasting relationships with clients and partners. We are committed to exploring opportunities that contribute to infrastructure development, agricultural growth, trade expansion, and economic progress.
+                    </p>
+                </div>
+                <div class="lg:col-span-4 flex flex-col gap-3">
+                    <a href="index.html#contact" class="flex items-center justify-between gap-3 bg-white text-darkBg px-6 py-4 rounded-full font-semibold text-sm hover:bg-white/90 transition shadow-lg group">
+                        <span>PARTNER WITH US</span>
+                        <div class="w-7 h-7 rounded-full bg-darkBg text-white flex items-center justify-center text-xs group-hover:rotate-45 transition-transform duration-300">
+                            <i class="fa-solid fa-arrow-up-right"></i>
+                        </div>
+                    </a>
+                    <a href="sectors.html" class="flex items-center justify-between gap-3 glass-pill text-white px-6 py-4 rounded-full font-semibold text-sm hover:bg-white/20 transition group">
+                        <span>EXPLORE OUR SECTORS</span>
+                        <div class="w-7 h-7 rounded-full bg-white/20 text-white flex items-center justify-center text-xs group-hover:translate-x-1 transition-transform">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER / CONTACT SECTION ========== -->
+    <footer id="contact" class="py-20 px-4 md:px-8 max-w-7xl mx-auto border-t border-white/10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-7 space-y-6">
+                <span class="text-xs font-mono text-white/50 tracking-wider block">(06) Get In Touch</span>
+                <h2 class="text-3xl sm:text-5xl font-light leading-tight text-white">
+                    Ready to build your next <br>
+                    <span class="font-bold">landmark investment?</span>
+                </h2>
+                <p class="text-sm text-mutedText max-w-lg leading-relaxed">
+                    Connect with our engineering and commercial export team in Ghana. Let's discuss partnership opportunities.
+                </p>
+            </div>
+
+            <div class="lg:col-span-5 glass-card p-8 rounded-3xl space-y-6">
+                <div>
+                    <label class="block text-xs font-mono text-white/70 mb-2 uppercase">Your Name</label>
+                    <input type="text" placeholder="Name" class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono text-white/70 mb-2 uppercase">Email Address</label>
+                    <input type="email" placeholder="Email" class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono text-white/70 mb-2 uppercase">Project Brief / Inquiry</label>
+                    <textarea rows="3" placeholder="Tell us about your project requirements..." class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition"></textarea>
+                </div>
+                <button type="button" onclick="handleFormSubmit()" class="w-full bg-white text-darkBg py-4 rounded-full font-bold text-sm tracking-wide hover:bg-white/90 transition shadow-lg flex items-center justify-center gap-2">
+                    <span>SEND INQUIRY</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+                <p id="form-msg" class="text-xs text-center text-emerald-400 hidden">Thank you! Your message has been submitted successfully.</p>
+            </div>
+
+        </div>
+
+        <div class="mt-20 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center text-xs text-mutedText gap-4">
+            <p>© 2026 OSMUT Construction & Investment. All rights reserved.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-white transition">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition">Terms of Service</a>
+                <a href="#" class="hover:text-white transition">Accra, Ghana</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========== INTERACTIVE SCRIPT LOGIC ========== -->
+    <script>
+        // ============================================================
+        // MOBILE MENU TOGGLE
+        // ============================================================
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenuPanel = document.getElementById('mobileMenuPanel');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        const body = document.body;
+
+        function toggleMobileMenu() {
+            const isOpen = mobileMenuPanel.classList.contains('open');
+            if (isOpen) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        }
+
+        function openMobileMenu() {
+            mobileMenuPanel.classList.add('open');
+            mobileMenuOverlay.classList.add('open');
+            mobileMenuBtn.classList.add('active');
+            body.classList.add('menu-open');
+            mobileMenuBtn.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeMobileMenu() {
+            mobileMenuPanel.classList.remove('open');
+            mobileMenuOverlay.classList.remove('open');
+            mobileMenuBtn.classList.remove('active');
+            body.classList.remove('menu-open');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && mobileMenuPanel.classList.contains('open')) {
+                closeMobileMenu();
+            }
+        });
+
+        // Close mobile menu when a nav link is clicked
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                closeMobileMenu();
+            });
+        });
+
+        // Close menu when resizing to desktop
+        window.addEventListener('resize', function () {
+            if (window.innerWidth >= 768 && mobileMenuPanel.classList.contains('open')) {
+                closeMobileMenu();
+            }
+        });
+
+        // ============================================================
+        // FORM HANDLER
+        // ============================================================
+        function handleFormSubmit() {
+            const msg = document.getElementById('form-msg');
+            msg.classList.remove('hidden');
+            setTimeout(() => {
+                msg.classList.add('hidden');
+            }, 4000);
+        }
+
+        // Smooth scroll reveal for elements (optional enhancement)
+        document.addEventListener('DOMContentLoaded', function () {
+            // Ensure all videos play inline on mobile
+            const videos = document.querySelectorAll('video');
+            videos.forEach(video => {
+                video.setAttribute('playsinline', '');
+                video.setAttribute('muted', '');
+                video.play().catch(e => { /* Silently ignore autoplay errors */ });
+            });
+        });
+    </script>
+</body>
+</html>

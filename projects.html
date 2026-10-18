@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSMUT Projects · Building Landmarks & Connecting Markets</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        darkBg: '#0f1013',
+                        cardBg: '#17181c',
+                        glassBg: 'rgba(255, 255, 255, 0.08)',
+                        glassBorder: 'rgba(255, 255, 255, 0.15)',
+                        glassPill: 'rgba(255, 255, 255, 0.12)',
+                        mutedText: '#a0a5ad'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f1013;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-pill:hover {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .glass-pill.active {
+            background: #ffffff;
+            color: #0f1013;
+            border-color: #ffffff;
+            font-weight: 600;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Video card backgrounds */
+        .bento-video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            transition: opacity 0.6s ease, transform 0.8s ease;
+            z-index: 0;
+        }
+
+        .glass-card:hover .bento-video {
+            opacity: 0.5;
+            transform: scale(1.04);
+        }
+
+        /* Overlay gradient for text legibility */
+        .bento-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(15,16,19,0.95) 0%, rgba(15,16,19,0.55) 50%, rgba(15,16,19,0.25) 100%);
+            z-index: 1;
+        }
+
+        /* Content above video & overlay */
+        .bento-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Learn more button hover */
+        .learn-more-btn {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .learn-more-btn:hover {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.6);
+            gap: 0.75rem;
+        }
+
+        /* Modal styles */
+        .modal-backdrop {
+            background: rgba(10, 11, 14, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: opacity 0.35s ease;
+        }
+
+        .modal-panel {
+            background: rgba(23, 24, 28, 0.94);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+        }
+
+        .modal-close-btn {
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.25s ease;
+        }
+        .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: rotate(90deg);
+        }
+
+        .modal-scroll {
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+        .modal-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+        .modal-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1013;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Smooth filter transition */
+        .filter-btn {
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Hidden project cards (for filtering) */
+        .hidden-project {
+            display: none !important;
+        }
+
+        /* Subtle floating animation for hero badges */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+        .float-badge {
+            animation: float 5s ease-in-out infinite;
+        }
+        .float-badge-delay {
+            animation: float 6s ease-in-out infinite;
+            animation-delay: 1s;
+        }
+
+        /* ========== MOBILE NAVIGATION STYLES ========== */
+
+        /* Hamburger button */
+        .mobile-menu-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mobile-menu-btn:hover,
+        .mobile-menu-btn.active {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        /* Hamburger lines */
+        .hamburger-line {
+            display: block;
+            width: 20px;
+            height: 1.5px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: center;
+        }
+        .mobile-menu-btn.active .hamburger-line:nth-child(1) {
+            transform: translateY(6.5px) rotate(45deg);
+        }
+        .mobile-menu-btn.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .mobile-menu-btn.active .hamburger-line:nth-child(3) {
+            transform: translateY(-6.5px) rotate(-45deg);
+        }
+
+        /* Mobile menu overlay */
+        .mobile-menu-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 45;
+            background: rgba(10, 11, 14, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .mobile-menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Mobile menu panel */
+        .mobile-menu-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 380px;
+            z-index: 46;
+            background: rgba(23, 24, 28, 0.97);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-left: 1px solid rgba(255, 255, 255, 0.12);
+            transform: translateX(100%);
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .mobile-menu-panel.open {
+            transform: translateX(0);
+        }
+
+        /* Mobile menu links */
+        .mobile-nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 1.05rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            transition: all 0.25s ease;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease, color 0.25s ease, padding-left 0.25s ease;
+        }
+        .mobile-nav-link:hover,
+        .mobile-nav-link:active {
+            color: #ffffff;
+            padding-left: 0.5rem;
+        }
+        .mobile-nav-link i {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.35);
+            transition: all 0.25s ease;
+        }
+        .mobile-nav-link:hover i {
+            color: #ffffff;
+            transform: translateX(4px);
+        }
+        .mobile-nav-link.active {
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .mobile-nav-link.active i {
+            color: #ffffff;
+        }
+
+        /* Staggered link animation */
+        .mobile-menu-panel.open .mobile-nav-link {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(1) { transition-delay: 0.06s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(2) { transition-delay: 0.10s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(3) { transition-delay: 0.14s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(4) { transition-delay: 0.18s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(5) { transition-delay: 0.22s; }
+
+        /* Prevent body scroll when menu open */
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* Mobile menu footer */
+        .mobile-menu-footer {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease 0.3s, transform 0.4s ease 0.3s;
+        }
+        .mobile-menu-panel.open .mobile-menu-footer {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-white selection:text-black">
+
+    <!-- ========== TOP NAVIGATION HEADER ========== -->
+    <header class="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 py-5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-3 text-white font-bold text-xl tracking-wider">
+                <div class="w-9 h-9 glass-pill rounded-xl flex items-center justify-center text-white border border-white/20">
+                    <i class="fa-solid fa-cubes text-sm"></i>
+                </div>
+                <span>OSMUT</span>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden md:flex items-center gap-1 glass-nav px-6 py-2.5 rounded-full text-sm font-medium text-white/80">
+                <a href="index.html" class="px-4 py-1 hover:text-white transition">Home</a>
+                <span class="text-white/20">|</span>
+                <a href="sectors.html" class="px-4 py-1 hover:text-white transition">Sectors</a>
+                <span class="text-white/20">|</span>
+                <a href="projects.html" class="px-4 py-1 text-white font-semibold border-b-2 border-white/70">Projects</a>
+                <span class="text-white/20">|</span>
+                <a href="about.html" class="px-4 py-1 hover:text-white transition">About Us</a>
+                <span class="text-white/20">|</span>
+                <a href="contact.html" class="px-4 py-1 hover:text-white transition">Contact Us</a>
+            </nav>
+
+            <!-- Desktop Book a Call Button -->
+            <a href="contact.html" class="hidden md:flex items-center gap-3 bg-white text-darkBg px-5 py-2.5 rounded-full font-semibold text-sm hover:bg-white/90 transition shadow-lg group">
+                <span>BOOK A CALL</span>
+                <div class="w-6 h-6 rounded-full bg-darkBg text-white flex items-center justify-center text-xs group-hover:rotate-45 transition-transform duration-300">
+                    <i class="fa-solid fa-arrow-up-right"></i>
+                </div>
+            </a>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="mobileMenuBtn" onclick="toggleMobileMenu()" 
+                    class="mobile-menu-btn md:hidden flex flex-col items-center justify-center gap-[5px] w-11 h-11 rounded-xl"
+                    aria-label="Toggle navigation menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ========== MOBILE MENU OVERLAY ========== -->
+    <div id="mobileMenuOverlay" class="mobile-menu-overlay" onclick="closeMobileMenu()"></div>
+
+    <!-- ========== MOBILE MENU PANEL ========== -->
+    <div id="mobileMenuPanel" class="mobile-menu-panel">
+        <div class="flex flex-col h-full p-6">
+            <!-- Panel Header -->
+            <div class="flex items-center justify-between mb-8">
+                <a href="index.html" class="flex items-center gap-3 text-white font-bold text-lg tracking-wider">
+                    <div class="w-9 h-9 glass-pill rounded-xl flex items-center justify-center text-white border border-white/20">
+                        <i class="fa-solid fa-cubes text-sm"></i>
+                    </div>
+                    <span>OSMUT</span>
+                </a>
+                <button onclick="closeMobileMenu()" 
+                        class="w-10 h-10 rounded-xl glass-pill flex items-center justify-center text-white/70 hover:text-white transition"
+                        aria-label="Close menu">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex flex-col">
+                <a href="index.html" class="mobile-nav-link">
+                    <span>Home</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="sectors.html" class="mobile-nav-link">
+                    <span>Sectors</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="projects.html" class="mobile-nav-link active">
+                    <span>Projects</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="about.html" class="mobile-nav-link">
+                    <span>About Us</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="contact.html" class="mobile-nav-link">
+                    <span>Contact Us</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            </nav>
+
+            <!-- Panel Footer: Book a Call + Contact -->
+            <div class="mobile-menu-footer mt-auto pt-8 space-y-5">
+                <!-- Book a Call Button -->
+                <a href="contact.html" class="flex items-center justify-between gap-3 bg-white text-darkBg px-5 py-3.5 rounded-full font-semibold text-sm hover:bg-white/90 transition shadow-lg group w-full">
+                    <span>BOOK A CALL</span>
+                    <div class="w-6 h-6 rounded-full bg-darkBg text-white flex items-center justify-center text-xs group-hover:rotate-45 transition-transform duration-300">
+                        <i class="fa-solid fa-arrow-up-right"></i>
+                    </div>
+                </a>
+
+                <!-- Contact quick info -->
+                <div class="space-y-2.5">
+                    <p class="text-xs text-white/50 flex items-center gap-2.5">
+                        <i class="fa-solid fa-location-dot text-white/30 text-[10px] w-3"></i>
+                        Airport Residential Area, Accra, Ghana
+                    </p>
+                    <p class="text-xs text-white/50 flex items-center gap-2.5">
+                        <i class="fa-regular fa-envelope text-white/30 text-[10px] w-3"></i>
+                        info@osmut.com
+                    </p>
+                    <p class="text-xs text-white/50 flex items-center gap-2.5">
+                        <i class="fa-solid fa-phone text-white/30 text-[10px] w-3"></i>
+                        +233 30 274 0000
+                    </p>
+                </div>
+
+                <!-- Social Icons -->
+                <div class="flex gap-2.5 pt-1">
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in text-xs"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="Twitter / X">
+                        <i class="fa-brands fa-x-twitter text-xs"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="Facebook">
+                        <i class="fa-brands fa-facebook-f text-xs"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="Instagram">
+                        <i class="fa-brands fa-instagram text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== HERO / PAGE TITLE ========== -->
+    <section class="relative pt-36 pb-12 px-4 md:px-8 max-w-7xl mx-auto">
+        <div class="absolute inset-0 -z-10 opacity-20">
+            <div class="absolute top-0 left-1/3 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-1/3 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+        </div>
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div class="max-w-2xl">
+                <span class="text-xs font-mono text-white/50 tracking-wider block mb-2">(03) OUR PROJECTS & CAPABILITIES</span>
+                <h1 class="text-4xl sm:text-6xl font-light text-white leading-tight">
+                    Building landmarks.<br>
+                    <span class="font-bold">Connecting markets.</span>
+                </h1>
+                <p class="text-sm text-mutedText leading-relaxed mt-5 max-w-lg">
+                    From civil infrastructure and commercial towers to agricultural hubs and international trade corridors — explore the projects and operations that define OSMUT's impact across Ghana and beyond.
+                </p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <span class="glass-pill float-badge px-4 py-2 rounded-full text-xs font-mono text-white/80 flex items-center gap-2">
+                    <i class="fa-solid fa-location-dot text-white/50"></i> Accra, Ghana
+                </span>
+                <span class="glass-pill float-badge-delay px-4 py-2 rounded-full text-xs font-mono text-white/80 flex items-center gap-2">
+                    <i class="fa-regular fa-calendar text-white/50"></i> Est. 2009
+                </span>
+                <span class="glass-pill px-4 py-2 rounded-full text-xs font-mono text-white/80 flex items-center gap-2">
+                    <i class="fa-solid fa-globe text-white/50"></i> West Africa & Global
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FILTER PILLS ========== -->
+    <section class="px-4 md:px-8 max-w-7xl mx-auto pb-8">
+        <div class="flex flex-wrap items-center gap-2.5">
+            <span class="text-xs font-mono text-white/40 mr-2 hidden sm:block">Filter by:</span>
+            <button onclick="filterProjects('all', this)" class="filter-btn glass-pill active px-5 py-2 rounded-full text-xs font-medium">All Projects</button>
+            <button onclick="filterProjects('construction', this)" class="filter-btn glass-pill px-5 py-2 rounded-full text-xs font-medium text-white/80">Construction</button>
+            <button onclick="filterProjects('trade', this)" class="filter-btn glass-pill px-5 py-2 rounded-full text-xs font-medium text-white/80">Trade & Logistics</button>
+            <button onclick="filterProjects('agriculture', this)" class="filter-btn glass-pill px-5 py-2 rounded-full text-xs font-medium text-white/80">Agriculture</button>
+            <button onclick="filterProjects('investment', this)" class="filter-btn glass-pill px-5 py-2 rounded-full text-xs font-medium text-white/80">Investments</button>
+        </div>
+    </section>
+
+    <!-- ========== BENTO GRID PROJECTS ========== -->
+    <section class="px-4 md:px-8 max-w-7xl mx-auto pb-24">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 auto-rows-[minmax(220px,auto)]">
+
+            <!-- ===== 1. HERO PROJECT (Large Bento) ===== -->
+            <div class="project-card glass-card rounded-3xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden group min-h-[420px] md:col-span-2 lg:col-span-2 lg:row-span-2" data-category="construction">
+                <video class="bento-video" autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?q=80&w=1600&auto=format&fit=crop">
+                    <source src="https://www.pexels.com/download/video/8792814/ " type="video/mp4">
+                </video>
+                <div class="bento-overlay"></div>
+                
+                <div class="bento-content flex flex-col h-full">
+                    <div class="flex justify-between items-start">
+                        <span class="glass-pill px-3.5 py-1.5 rounded-full text-[10px] font-mono tracking-widest flex items-center gap-2">
+                            <i class="fa-solid fa-star text-white/70 text-[8px]"></i> FLAGSHIP PROJECT
+                        </span>
+                        <span class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono">CONSTRUCTION</span>
+                    </div>
+                    
+                    <div class="mt-auto">
+                        <h3 class="text-3xl md:text-4xl font-bold text-white mt-6 mb-3 leading-tight">Accra Commercial Tower</h3>
+                        <p class="text-sm text-white/75 leading-relaxed max-w-lg">
+                            A 22-storey mixed-use commercial development in the heart of Accra's business district — featuring premium office spaces, retail outlets, and a rooftop conference facility. Delivered on schedule with LEED-certified sustainability standards.
+                        </p>
+                        <div class="flex flex-wrap items-center gap-4 mt-5 text-xs text-white/60 font-mono">
+                            <span><i class="fa-solid fa-location-dot mr-1.5 text-white/40"></i> Accra, Ghana</span>
+                            <span><i class="fa-regular fa-calendar mr-1.5 text-white/40"></i> 2023 – 2025</span>
+                            <span><i class="fa-solid fa-ruler-combined mr-1.5 text-white/40"></i> 48,000 m²</span>
+                        </div>
+                        <button onclick="openProjectModal('flagship')" class="learn-more-btn mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/40 text-xs font-semibold text-white transition">
+                            <span>View Project Details</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== 2. TRADE CORRIDOR ===== -->
+            <div class="project-card glass-card rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden group min-h-[260px]" data-category="trade">
+                <video class="bento-video" autoplay muted loop playsinline poster="https://i.pinimg.com/736x/c6/15/21/c615216aea525c7350a82e7cafac301b.jpg ">
+                    <source src="https://www.pexels.com/download/video/38444251/ " type="video/mp4">
+                </video>
+                <div class="bento-overlay"></div>
+                
+                <div class="bento-content flex flex-col h-full">
+                    <div class="flex justify-between items-start">
+                        <span class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono">TRADE</span>
+                        <i class="fa-solid fa-ship text-white/40"></i>
+                    </div>
+                    <div class="mt-auto">
+                        <h3 class="text-xl font-bold text-white mb-2">West Africa Trade Corridor</h3>
+                        <p class="text-xs text-white/65 leading-relaxed">
+                            Cross-border logistics and commodity supply network linking Ghana, Togo, and Burkina Faso — streamlining import/export operations for general merchandise and food commodities.
+                        </p>
+                        <button onclick="openProjectModal('trade')" class="learn-more-btn mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/30 text-[11px] font-semibold text-white transition">
+                            <span>Details</span>
+                            <i class="fa-solid fa-arrow-right text-[9px]"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== 3. AGRI HUB (Tall) ===== -->
+            <div class="project-card glass-card rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden group min-h-[260px] lg:row-span-2" data-category="agriculture">
+                <video class="bento-video" autoplay muted loop playsinline poster="https://i.pinimg.com/736x/75/6d/09/756d09b4d7205156227bfded841d580e.jpg ">
+                    <source src=" " type="video/mp4">
+                </video>
+                <div class="bento-overlay"></div>
+                
+                <div class="bento-content flex flex-col h-full">
+                    <div class="flex justify-between items-start">
+                        <span class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono">AGRICULTURE</span>
+                        <i class="fa-solid fa-seedling text-white/40"></i>
+                    </div>
+                    <div class="mt-auto">
+                        <h3 class="text-xl font-bold text-white mb-2">Volta Agribusiness Hub</h3>
+                        <p class="text-xs text-white/65 leading-relaxed mb-3">
+                            A regional aggregation and distribution center supporting smallholder farmers with farm inputs, equipment, and market access for staple crops.
+                        </p>
+                        <div class="flex flex-col gap-1.5 text-[10px] text-white/50 font-mono mb-4">
+                            <span><i class="fa-solid fa-location-dot mr-1.5"></i> Volta Region, Ghana</span>
+                            <span><i class="fa-solid fa-people-group mr-1.5"></i> 1,200+ farmers supported</span>
+                        </div>
+                        <button onclick="openProjectModal('agri')" class="learn-more-btn inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/30 text-[11px] font-semibold text-white transition">
+                            <span>Details</span>
+                            <i class="fa-solid fa-arrow-right text-[9px]"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== 4. RESIDENTIAL ESTATE ===== -->
+            <div class="project-card glass-card rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden group min-h-[260px]" data-category="construction">
+                <video class="bento-video" autoplay muted loop playsinline poster="https://i.pinimg.com/1200x/76/21/22/7621227bc0ade51f9a439839239f2927.jpg">
+                    <source src="https://www.pexels.com/download/video/32953540/ " type="video/mp4">
+                </video>
+                <div class="bento-overlay"></div>
+                
+                <div class="bento-content flex flex-col h-full">
+                    <div class="flex justify-between items-start">
+                        <span class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono">CONSTRUCTION</span>
+                        <i class="fa-regular fa-building text-white/40"></i>
+                    </div>
+                    <div class="mt-auto">
+                        <h3 class="text-xl font-bold text-white mb-2">East Legon Residential Estate</h3>
+                        <p class="text-xs text-white/65 leading-relaxed">
+                            A gated community of 48 contemporary homes featuring smart-home infrastructure, landscaped communal areas, and sustainable water management systems.
+                        </p>
+                        <button onclick="openProjectModal('residential')" class="learn-more-btn mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/30 text-[11px] font-semibold text-white transition">
+                            <span>Details</span>
+                            <i class="fa-solid fa-arrow-right text-[9px]"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== 5. FOOD DISTRIBUTION ===== -->
+            <div class="project-card glass-card rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden group min-h-[260px]" data-category="trade">
+                <video class="bento-video" autoplay muted loop playsinline poster="https://i.pinimg.com/1200x/fa/fa/50/fafa50fc269618772f591bb5b5484e26.jpg ">
+                    <source src="https://cdn.coverr.co/videos/coverr-a-market-with-fresh-vegetables-1570/1080p.mp4" type="video/mp4">
+                </video>
+                <div class="bento-overlay"></div>
+                
+                <div class="bento-content flex flex-col h-full">
+                    <div class="flex justify-between items-start">
+                        <span class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono">TRADE</span>
+                        <i class="fa-solid fa-bowl-food text-white/40"></i>
+                    </div>
+                    <div class="mt-auto">
+                        <h3 class="text-xl font-bold text-white mb-2">National Food Distribution Network</h3>
+                        <p class="text-xs text-white/65 leading-relaxed">
+                            Wholesale supply chain connecting food manufacturers and agricultural producers to retailers, hotels, and institutional buyers across all 16 regions of Ghana.
+                        </p>
+                        <button onclick="openProjectModal('food')" class="learn-more-btn mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/30 text-[11px] font-semibold text-white transition">
+                            <span>Details</span>
+                            <i class="fa-solid fa-arrow-right text-[9px]"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== 6. INVESTMENT PORTFOLIO ===== -->
+            <div class="project-card glass-card rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden group min-h-[260px]" data-category="investment">
+                <video class="bento-video" autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800&auto=format&fit=crop">
+                    <source src="v1.mp4" type="video/mp4">
+                </video>
+                <div class="bento-overlay"></div>
+                
+                <div class="bento-content flex flex-col h-full">
+                    <div class="flex justify-between items-start">
+                        <span class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono">INVESTMENT</span>
+                        <i class="fa-solid fa-chart-line text-white/40"></i>
+                    </div>
+                    <div class="mt-auto">
+                        <h3 class="text-xl font-bold text-white mb-2">Strategic Investment Portfolio</h3>
+                        <p class="text-xs text-white/65 leading-relaxed">
+                            Diversified commercial investments across agriculture, logistics, and real estate — driving sustainable growth and creating long-term value for partners.
+                        </p>
+                        <button onclick="openProjectModal('investment')" class="learn-more-btn mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/30 text-[11px] font-semibold text-white transition">
+                            <span>Details</span>
+                            <i class="fa-solid fa-arrow-right text-[9px]"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== 7. ROAD INFRASTRUCTURE ===== -->
+            <div class="project-card glass-card rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden group min-h-[260px] md:col-span-2" data-category="construction">
+                <video class="bento-video" autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1600&auto=format&fit=crop">
+                    <source src="https://cdn.coverr.co/videos/coverr-aerial-view-of-a-highway-1569/1080p.mp4" type="video/mp4">
+                </video>
+                <div class="bento-overlay"></div>
+                
+                <div class="bento-content flex flex-col h-full">
+                    <div class="flex justify-between items-start">
+                        <span class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono">CONSTRUCTION</span>
+                        <i class="fa-solid fa-road text-white/40"></i>
+                    </div>
+                    <div class="mt-auto">
+                        <h3 class="text-xl font-bold text-white mb-2">Regional Highway Rehabilitation</h3>
+                        <p class="text-xs text-white/65 leading-relaxed max-w-2xl">
+                            Civil engineering works spanning 34 km of arterial road rehabilitation in the Eastern Region — including drainage systems, bridge reinforcement, and safety infrastructure. Completed with minimal disruption to local communities.
+                        </p>
+                        <div class="flex flex-wrap items-center gap-4 mt-4 text-[10px] text-white/50 font-mono">
+                            <span><i class="fa-solid fa-location-dot mr-1.5"></i> Eastern Region, Ghana</span>
+                            <span><i class="fa-regular fa-calendar mr-1.5"></i> 2022 – 2024</span>
+                            <span><i class="fa-solid fa-ruler-combined mr-1.5"></i> 34 km</span>
+                        </div>
+                        <button onclick="openProjectModal('highway')" class="learn-more-btn mt-5 inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/40 text-xs font-semibold text-white transition">
+                            <span>View Project Details</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Empty state message -->
+        <div id="emptyState" class="hidden text-center py-20">
+            <div class="glass-card inline-flex flex-col items-center gap-4 px-8 py-10 rounded-3xl">
+                <i class="fa-regular fa-folder-open text-4xl text-white/30"></i>
+                <p class="text-sm text-white/60">No projects found in this category.</p>
+                <button onclick="filterProjects('all', document.querySelector('.filter-btn'))" class="text-xs text-white/80 underline underline-offset-4 hover:text-white transition">Show all projects</button>
+            </div>
+        </div>
+
+        <!-- CTA Banner -->
+        <div class="mt-16 glass-card rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent"></div>
+            <div class="relative z-10">
+                <h3 class="text-2xl md:text-3xl font-bold text-white mb-2">Have a project in mind?</h3>
+                <p class="text-sm text-white/60 max-w-lg">Let's discuss how OSMUT can bring your construction, trade, or investment vision to life.</p>
+            </div>
+            <a href="index.html#contact" class="relative z-10 flex items-center gap-3 bg-white text-darkBg px-6 py-3.5 rounded-full font-semibold text-sm hover:bg-white/90 transition shadow-lg group flex-shrink-0">
+                <span>START A CONVERSATION</span>
+                <div class="w-6 h-6 rounded-full bg-darkBg text-white flex items-center justify-center text-xs group-hover:rotate-45 transition-transform duration-300">
+                    <i class="fa-solid fa-arrow-up-right"></i>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- ========== PROJECT DETAIL MODAL ========== -->
+    <div id="projectModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 md:p-8">
+        <div class="modal-backdrop absolute inset-0" onclick="closeProjectModal()"></div>
+        <div id="projectModalPanel" class="modal-panel relative w-full max-w-3xl rounded-3xl p-6 md:p-10 transform scale-95 opacity-0 transition-all duration-300 ease-out">
+            <button onclick="closeProjectModal()" class="modal-close-btn absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center text-white/80 hover:text-white z-20">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div id="projectModalContent" class="modal-scroll">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== FOOTER ========== -->
+    <footer id="contact" class="py-20 px-4 md:px-8 max-w-7xl mx-auto border-t border-white/10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-7 space-y-6">
+                <span class="text-xs font-mono text-white/50 tracking-wider block">(04) Get In Touch</span>
+                <h2 class="text-3xl sm:text-5xl font-light leading-tight text-white">
+                    Ready to build your next <br>
+                    <span class="font-bold">landmark investment?</span>
+                </h2>
+                <p class="text-sm text-mutedText max-w-lg leading-relaxed">
+                    Connect with our engineering and commercial export team in Ghana. Let's discuss partnership opportunities.
+                </p>
+            </div>
+            <div class="lg:col-span-5 glass-card p-8 rounded-3xl space-y-6">
+                <div>
+                    <label class="block text-xs font-mono text-white/70 mb-2 uppercase">Your Name</label>
+                    <input type="text" placeholder="Name" class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono text-white/70 mb-2 uppercase">Email Address</label>
+                    <input type="email" placeholder="Email" class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono text-white/70 mb-2 uppercase">Project Brief / Inquiry</label>
+                    <textarea rows="3" placeholder="Tell us about your project requirements..." class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition"></textarea>
+                </div>
+                <button type="button" onclick="handleFormSubmit()" class="w-full bg-white text-darkBg py-4 rounded-full font-bold text-sm tracking-wide hover:bg-white/90 transition shadow-lg flex items-center justify-center gap-2">
+                    <span>SEND INQUIRY</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+                <p id="form-msg" class="text-xs text-center text-emerald-400 hidden">Thank you! Your message has been submitted successfully.</p>
+            </div>
+        </div>
+        <div class="mt-20 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center text-xs text-mutedText gap-4">
+            <p>© 2026 OSMUT Construction & Investment. All rights reserved.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-white transition">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition">Terms of Service</a>
+                <a href="#" class="hover:text-white transition">Accra, Ghana</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================================
+        // MOBILE MENU TOGGLE
+        // ============================================================
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenuPanel = document.getElementById('mobileMenuPanel');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        const body = document.body;
+
+        function toggleMobileMenu() {
+            const isOpen = mobileMenuPanel.classList.contains('open');
+            if (isOpen) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        }
+
+        function openMobileMenu() {
+            mobileMenuPanel.classList.add('open');
+            mobileMenuOverlay.classList.add('open');
+            mobileMenuBtn.classList.add('active');
+            body.classList.add('menu-open');
+            mobileMenuBtn.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeMobileMenu() {
+            mobileMenuPanel.classList.remove('open');
+            mobileMenuOverlay.classList.remove('open');
+            mobileMenuBtn.classList.remove('active');
+            body.classList.remove('menu-open');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && mobileMenuPanel.classList.contains('open')) {
+                closeMobileMenu();
+            }
+        });
+
+        // Close mobile menu when a nav link is clicked
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                closeMobileMenu();
+            });
+        });
+
+        // Close menu when resizing to desktop
+        window.addEventListener('resize', function () {
+            if (window.innerWidth >= 768 && mobileMenuPanel.classList.contains('open')) {
+                closeMobileMenu();
+            }
+        });
+
+        // ============================================================
+        // PROJECT DATA (for modals)
+        // ============================================================
+        const projectData = {
+            flagship: {
+                title: 'Accra Commercial Tower',
+                category: 'Construction & Infrastructure',
+                status: 'Completed 2025',
+                location: 'Accra, Ghana',
+                description: 'A 22-storey mixed-use commercial development in the heart of Accra\'s business district — featuring premium office spaces, retail outlets, and a rooftop conference facility.',
+                details: `
+                    <p class="text-sm text-white/70 leading-relaxed mb-6">
+                        The Accra Commercial Tower stands as a testament to OSMUT's commitment to quality workmanship and modern construction standards. This flagship project was delivered on schedule and within budget, incorporating LEED-certified sustainability features throughout.
+                    </p>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-white/50 text-xs"></i> Project Highlights
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-white/65 mb-6">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> 48,000 m² of premium commercial space across 22 floors</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> LEED Gold certified for energy efficiency and sustainability</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Smart building management system and high-speed elevators</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> 3-level underground parking with 400 spaces</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Rooftop conference and events facility with panoramic city views</li>
+                    </ul>
+                    <div class="glass-pill p-4 rounded-2xl text-xs text-white/60 leading-relaxed">
+                        <strong class="text-white/90">Client testimonial:</strong> "OSMUT delivered exceptional quality and maintained clear communication throughout the project. The tower has become a landmark in Accra's skyline."
+                    </div>
+                `
+            },
+            trade: {
+                title: 'West Africa Trade Corridor',
+                category: 'Import & Export',
+                status: 'Ongoing',
+                location: 'Ghana · Togo · Burkina Faso',
+                description: 'Cross-border logistics and commodity supply network linking Ghana, Togo, and Burkina Faso.',
+                details: `
+                    <p class="text-sm text-white/70 leading-relaxed mb-6">
+                        This strategic trade corridor streamlines import/export operations for general merchandise and food commodities across three West African nations. The network leverages OSMUT's established supplier relationships and logistics partnerships to reduce transit times and costs.
+                    </p>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-white/50 text-xs"></i> Operational Scope
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-white/65 mb-6">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> General merchandise import and distribution</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Food commodity sourcing and wholesale supply</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Cross-border customs coordination and documentation</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Strategic partnerships with regional distributors</li>
+                    </ul>
+                    <div class="glass-pill p-4 rounded-2xl text-xs text-white/60 leading-relaxed">
+                        This corridor supports OSMUT's vision of connecting markets and creating opportunities across West Africa, with plans for expansion into additional ECOWAS member states.
+                    </div>
+                `
+            },
+            agri: {
+                title: 'Volta Agribusiness Hub',
+                category: 'Agriculture & Agricultural Products',
+                status: 'Operational',
+                location: 'Volta Region, Ghana',
+                description: 'A regional aggregation and distribution center supporting smallholder farmers with farm inputs, equipment, and market access.',
+                details: `
+                    <p class="text-sm text-white/70 leading-relaxed mb-6">
+                        The Volta Agribusiness Hub represents OSMUT's commitment to strengthening agricultural value chains and supporting rural livelihoods. The hub serves as a central point for input distribution, produce aggregation, and market linkage.
+                    </p>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-white/50 text-xs"></i> Impact Metrics
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-white/65 mb-6">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> 1,200+ smallholder farmers directly supported</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Distribution of certified seeds, fertilizers, and farming equipment</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Market access for staple crops including maize, rice, and cassava</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Training programs on modern farming techniques and post-harvest handling</li>
+                    </ul>
+                    <div class="glass-pill p-4 rounded-2xl text-xs text-white/60 leading-relaxed">
+                        This initiative contributes directly to food security and employment creation in the Volta Region, aligning with OSMUT's agricultural development objectives.
+                    </div>
+                `
+            },
+            residential: {
+                title: 'East Legon Residential Estate',
+                category: 'Construction & Infrastructure',
+                status: 'Completed 2024',
+                location: 'East Legon, Accra',
+                description: 'A gated community of 48 contemporary homes featuring smart-home infrastructure and sustainable design.',
+                details: `
+                    <p class="text-sm text-white/70 leading-relaxed mb-6">
+                        This premium residential development showcases OSMUT's ability to deliver high-quality living spaces that combine modern design with practical functionality. The estate has become one of East Legon's most sought-after addresses.
+                    </p>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-white/50 text-xs"></i> Development Features
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-white/65 mb-6">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> 48 detached and semi-detached homes with 3-5 bedrooms</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Smart-home automation including security and climate control</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Community amenities: swimming pool, gym, and children's play area</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Rainwater harvesting and solar water heating systems</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> 24/7 security with gated access and CCTV surveillance</li>
+                    </ul>
+                    <div class="glass-pill p-4 rounded-2xl text-xs text-white/60 leading-relaxed">
+                        The estate was completed with a focus on sustainable living and community well-being, reflecting OSMUT's commitment to quality residential construction.
+                    </div>
+                `
+            },
+            food: {
+                title: 'National Food Distribution Network',
+                category: 'Food Products & Commodities',
+                status: 'Ongoing',
+                location: 'All 16 Regions of Ghana',
+                description: 'Wholesale supply chain connecting food manufacturers and agricultural producers to retailers, hotels, and institutional buyers.',
+                details: `
+                    <p class="text-sm text-white/70 leading-relaxed mb-6">
+                        OSMUT's national food distribution network ensures reliable supply of quality food products across Ghana. By connecting producers with institutional buyers, we support food security and reduce post-harvest losses.
+                    </p>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-white/50 text-xs"></i> Network Capabilities
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-white/65 mb-6">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Sourcing from certified food manufacturers and agricultural cooperatives</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Distribution to supermarkets, hotels, restaurants, and institutional catering</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Cold chain logistics for perishable products</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Quality assurance and product traceability systems</li>
+                    </ul>
+                    <div class="glass-pill p-4 rounded-2xl text-xs text-white/60 leading-relaxed">
+                        The network serves as a critical link between Ghana's agricultural producers and the growing demand from food service and retail sectors.
+                    </div>
+                `
+            },
+            investment: {
+                title: 'Strategic Investment Portfolio',
+                category: 'General Trading & Commercial Investments',
+                status: 'Active',
+                location: 'Ghana & International',
+                description: 'Diversified commercial investments across agriculture, logistics, and real estate.',
+                details: `
+                    <p class="text-sm text-white/70 leading-relaxed mb-6">
+                        OSMUT's investment portfolio reflects our diversified business model and long-term growth strategy. We partner with local and international investors to identify and capitalize on emerging opportunities.
+                    </p>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-white/50 text-xs"></i> Portfolio Focus Areas
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-white/65 mb-6">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Agricultural value chain investments and agri-processing</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Commercial real estate development and property management</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Logistics and supply chain infrastructure</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Strategic joint ventures with international partners</li>
+                    </ul>
+                    <div class="glass-pill p-4 rounded-2xl text-xs text-white/60 leading-relaxed">
+                        We are actively seeking partnerships that create shared value, encourage innovation, and support sustainable business growth across West Africa.
+                    </div>
+                `
+            },
+            highway: {
+                title: 'Regional Highway Rehabilitation',
+                category: 'Construction & Infrastructure',
+                status: 'Completed 2024',
+                location: 'Eastern Region, Ghana',
+                description: 'Civil engineering works spanning 34 km of arterial road rehabilitation including drainage and safety infrastructure.',
+                details: `
+                    <p class="text-sm text-white/70 leading-relaxed mb-6">
+                        This major infrastructure project demonstrates OSMUT's civil engineering expertise and commitment to improving regional connectivity. The rehabilitation significantly reduced travel times and improved safety for commuters and goods transport.
+                    </p>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-white/50 text-xs"></i> Project Scope
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-white/65 mb-6">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> 34 km of arterial road rehabilitation and resurfacing</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Construction of modern drainage systems to prevent flooding</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Bridge reinforcement and culvert installation</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Road safety infrastructure including signage and street lighting</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Minimal disruption to local communities through phased construction</li>
+                    </ul>
+                    <div class="glass-pill p-4 rounded-2xl text-xs text-white/60 leading-relaxed">
+                        The project was delivered with a strong emphasis on safety and quality, meeting all government specifications and standards.
+                    </div>
+                `
+            }
+        };
+
+        // ============================================================
+        // PROJECT FILTERING
+        // ============================================================
+        function filterProjects(category, btnElement) {
+            // Update active pill
+            const pills = btnElement.parentElement.querySelectorAll('.filter-btn');
+            pills.forEach(p => {
+                p.classList.remove('active');
+                p.classList.add('text-white/80');
+            });
+            btnElement.classList.add('active');
+            btnElement.classList.remove('text-white/80');
+
+            // Filter project cards
+            const cards = document.querySelectorAll('.project-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+                if (category === 'all' || cardCategory === category) {
+                    card.classList.remove('hidden-project');
+                    // Add a subtle fade-in
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(10px)';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 30);
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden-project');
+                }
+            });
+
+            // Show/hide empty state
+            const emptyState = document.getElementById('emptyState');
+            if (visibleCount === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+            }
+        }
+
+        // ============================================================
+        // PROJECT MODAL
+        // ============================================================
+        const projectModal = document.getElementById('projectModal');
+        const projectModalPanel = document.getElementById('projectModalPanel');
+        const projectModalContent = document.getElementById('projectModalContent');
+
+        function openProjectModal(projectKey) {
+            const data = projectData[projectKey];
+            if (!data) return;
+
+            projectModalContent.innerHTML = `
+                <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono tracking-wider text-white/70">${data.category}</span>
+                    <span class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono text-emerald-300/80 border-emerald-400/20">${data.status}</span>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white mt-3 mb-2">${data.title}</h2>
+                <div class="flex flex-wrap items-center gap-4 text-xs text-white/50 font-mono mb-5">
+                    <span><i class="fa-solid fa-location-dot mr-1.5 text-white/40"></i> ${data.location}</span>
+                </div>
+                <p class="text-sm text-white/60 leading-relaxed mb-6 border-l-2 border-white/20 pl-4">
+                    ${data.description}
+                </p>
+                <div class="h-px w-full bg-gradient-to-r from-white/20 to-transparent mb-6"></div>
+                ${data.details}
+                <div class="mt-8 pt-6 border-t border-white/10 flex justify-end">
+                    <button onclick="closeProjectModal()" class="px-6 py-2.5 rounded-full bg-white text-darkBg font-semibold text-xs tracking-wide hover:bg-white/90 transition">
+                        Close
+                    </button>
+                </div>
+            `;
+
+            projectModal.classList.remove('hidden');
+            projectModal.classList.add('flex');
+            body.style.overflow = 'hidden';
+
+            requestAnimationFrame(() => {
+                projectModalPanel.classList.remove('scale-95', 'opacity-0');
+                projectModalPanel.classList.add('scale-100', 'opacity-100');
+            });
+
+            projectModalContent.scrollTop = 0;
+        }
+
+        function closeProjectModal() {
+            projectModalPanel.classList.remove('scale-100', 'opacity-100');
+            projectModalPanel.classList.add('scale-95', 'opacity-0');
+
+            setTimeout(() => {
+                projectModal.classList.add('hidden');
+                projectModal.classList.remove('flex');
+                body.style.overflow = '';
+            }, 300);
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && !projectModal.classList.contains('hidden')) {
+                closeProjectModal();
+            }
+        });
+
+        // ============================================================
+        // FORM HANDLER
+        // ============================================================
+        function handleFormSubmit() {
+            const msg = document.getElementById('form-msg');
+            msg.classList.remove('hidden');
+            setTimeout(() => {
+                msg.classList.add('hidden');
+            }, 4000);
+        }
+
+        // ============================================================
+        // ENSURE VIDEOS PLAY INLINE ON MOBILE
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const videos = document.querySelectorAll('video');
+            videos.forEach(video => {
+                video.setAttribute('playsinline', '');
+                video.setAttribute('muted', '');
+                video.play().catch(e => { /* Silently ignore autoplay errors */ });
+            });
+        });
+    </script>
+</body>
+</html>

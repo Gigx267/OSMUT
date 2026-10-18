@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSMUT Construction & Investment</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        darkBg: '#0f1013',
+                        cardBg: '#17181c',
+                        glassBg: 'rgba(255, 255, 255, 0.08)',
+                        glassBorder: 'rgba(255, 255, 255, 0.15)',
+                        glassPill: 'rgba(255, 255, 255, 0.12)',
+                        mutedText: '#a0a5ad'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f1013;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Frosted Glass UI Utilities */
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-pill:hover {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .glass-pill.active {
+            background: #ffffff;
+            color: #0f1013;
+            border-color: #ffffff;
+            font-weight: 600;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1013;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* ========== MOBILE NAVIGATION STYLES ========== */
+
+        /* Hamburger button */
+        .mobile-menu-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mobile-menu-btn:hover,
+        .mobile-menu-btn.active {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        /* Hamburger lines */
+        .hamburger-line {
+            display: block;
+            width: 20px;
+            height: 1.5px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: center;
+        }
+        .mobile-menu-btn.active .hamburger-line:nth-child(1) {
+            transform: translateY(6.5px) rotate(45deg);
+        }
+        .mobile-menu-btn.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .mobile-menu-btn.active .hamburger-line:nth-child(3) {
+            transform: translateY(-6.5px) rotate(-45deg);
+        }
+
+        /* Mobile menu overlay */
+        .mobile-menu-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 45;
+            background: rgba(10, 11, 14, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .mobile-menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Mobile menu panel */
+        .mobile-menu-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 380px;
+            z-index: 46;
+            background: rgba(23, 24, 28, 0.97);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-left: 1px solid rgba(255, 255, 255, 0.12);
+            transform: translateX(100%);
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .mobile-menu-panel.open {
+            transform: translateX(0);
+        }
+
+        /* Mobile menu links */
+        .mobile-nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 1.05rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            transition: all 0.25s ease;
+        }
+        .mobile-nav-link:hover,
+        .mobile-nav-link:active {
+            color: #ffffff;
+            padding-left: 0.5rem;
+        }
+        .mobile-nav-link i {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.35);
+            transition: all 0.25s ease;
+        }
+        .mobile-nav-link:hover i {
+            color: #ffffff;
+            transform: translateX(4px);
+        }
+        .mobile-nav-link.active {
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .mobile-nav-link.active i {
+            color: #ffffff;
+        }
+
+        /* Staggered link animation */
+        .mobile-nav-link {
+            opacity: 0;
+            transform: translateX(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease, color 0.25s ease, padding-left 0.25s ease;
+        }
+        .mobile-menu-panel.open .mobile-nav-link {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(1) { transition-delay: 0.06s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(2) { transition-delay: 0.10s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(3) { transition-delay: 0.14s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(4) { transition-delay: 0.18s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(5) { transition-delay: 0.22s; }
+
+        /* Prevent body scroll when menu open */
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* Mobile menu footer */
+        .mobile-menu-footer {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease 0.3s, transform 0.4s ease 0.3s;
+        }
+        .mobile-menu-panel.open .mobile-menu-footer {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-white selection:text-black">
+
+    <!-- ========== TOP NAVIGATION HEADER ========== -->
+    <header class="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 py-5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-3 text-white font-bold text-xl tracking-wider">
+                <div class="w-9 h-9 glass-pill rounded-xl flex items-center justify-center text-white border border-white/20">
+                    <i class="fa-solid fa-cubes text-sm"></i>
+                </div>
+                <span>OSMUT</span>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden md:flex items-center gap-1 glass-nav px-6 py-2.5 rounded-full text-sm font-medium text-white/80">
+                <a href="index.html" class="px-4 py-1 text-white font-semibold">Home</a>
+                <span class="text-white/20">|</span>
+                <a href="sectors.html" class="px-4 py-1 hover:text-white transition">Sectors</a>
+                <span class="text-white/20">|</span>
+                <a href="projects.html" class="px-4 py-1 hover:text-white transition">Projects</a>
+                <span class="text-white/20">|</span>
+                <a href="about.html" class="px-4 py-1 hover:text-white transition">About Us</a>
+                <span class="text-white/20">|</span>
+                <a href="contact.html" class="px-4 py-1 hover:text-white transition">Contact Us</a>
+            </nav>
+
+            <!-- Desktop Book a Call Button -->
+            <a href="./Booking.html" class="hidden md:flex items-center gap-3 bg-white text-darkBg px-5 py-2.5 rounded-full font-semibold text-sm hover:bg-white/90 transition shadow-lg group">
+                <span>BOOK A CALL</span>
+                <div class="w-6 h-6 rounded-full bg-darkBg text-white flex items-center justify-center text-xs group-hover:rotate-45 transition-transform duration-300">
+                    <i class="fa-solid fa-arrow-up-right"></i>
+                </div>
+            </a>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="mobileMenuBtn" onclick="toggleMobileMenu()" 
+                    class="mobile-menu-btn md:hidden flex flex-col items-center justify-center gap-[5px] w-11 h-11 rounded-xl"
+                    aria-label="Toggle navigation menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ========== MOBILE MENU OVERLAY ========== -->
+    <div id="mobileMenuOverlay" class="mobile-menu-overlay" onclick="closeMobileMenu()"></div>
+
+    <!-- ========== MOBILE MENU PANEL ========== -->
+    <div id="mobileMenuPanel" class="mobile-menu-panel">
+        <div class="flex flex-col h-full p-6">
+            <!-- Panel Header -->
+            <div class="flex items-center justify-between mb-8">
+                <a href="index.html" class="flex items-center gap-3 text-white font-bold text-lg tracking-wider">
+                    <div class="w-9 h-9 glass-pill rounded-xl flex items-center justify-center text-white border border-white/20">
+                        <i class="fa-solid fa-cubes text-sm"></i>
+                    </div>
+                    <span>OSMUT</span>
+                </a>
+                <button onclick="closeMobileMenu()" 
+                        class="w-10 h-10 rounded-xl glass-pill flex items-center justify-center text-white/70 hover:text-white transition"
+                        aria-label="Close menu">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex flex-col">
+                <a href="index.html" class="mobile-nav-link active">
+                    <span>Home</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="sectors.html" class="mobile-nav-link">
+                    <span>Sectors</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="projects.html" class="mobile-nav-link">
+                    <span>Projects</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="about.html" class="mobile-nav-link">
+                    <span>About Us</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="contact.html" class="mobile-nav-link">
+                    <span>Contact Us</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            </nav>
+
+            <!-- Panel Footer: Book a Call + Contact -->
+            <div class="mobile-menu-footer mt-auto pt-8 space-y-5">
+                <!-- Book a Call Button -->
+                <a href="./Booking.html" class="flex items-center justify-between gap-3 bg-white text-darkBg px-5 py-3.5 rounded-full font-semibold text-sm hover:bg-white/90 transition shadow-lg group w-full">
+                    <span>BOOK A CALL</span>
+                    <div class="w-6 h-6 rounded-full bg-darkBg text-white flex items-center justify-center text-xs group-hover:rotate-45 transition-transform duration-300">
+                        <i class="fa-solid fa-arrow-up-right"></i>
+                    </div>
+                </a>
+
+                <!-- Contact quick info -->
+                <div class="space-y-2.5">
+                    <p class="text-xs text-white/50 flex items-center gap-2.5">
+                        <i class="fa-solid fa-location-dot text-white/30 text-[10px] w-3"></i>
+                        Airport Residential Area, Accra, Ghana
+                    </p>
+                    <p class="text-xs text-white/50 flex items-center gap-2.5">
+                        <i class="fa-regular fa-envelope text-white/30 text-[10px] w-3"></i>
+                        info@osmut.com
+                    </p>
+                    <p class="text-xs text-white/50 flex items-center gap-2.5">
+                        <i class="fa-solid fa-phone text-white/30 text-[10px] w-3"></i>
+                        +233 30 274 0000
+                    </p>
+                </div>
+
+                <!-- Social Icons -->
+                <div class="flex gap-2.5 pt-1">
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in text-xs"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="Twitter / X">
+                        <i class="fa-brands fa-x-twitter text-xs"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="Facebook">
+                        <i class="fa-brands fa-facebook-f text-xs"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="Instagram">
+                        <i class="fa-brands fa-instagram text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MAIN HERO SECTION ========== -->
+    <section id="home" class="relative min-h-screen pt-28 pb-12 px-4 md:px-8 flex flex-col justify-between overflow-hidden">
+        
+        <!-- Hero Background Image Container -->
+        <div class="absolute inset-x-4 md:inset-x-8 top-20 bottom-4 rounded-3xl overflow-hidden -z-10 border border-white/10">
+            <!-- Main Hero Background Video -->
+            <video id="hero-bg-video" class="absolute inset-0 w-full h-full object-cover brightness-[0.7] transition-all duration-700 scale-105" autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1600&q=80">
+                <source src="https://cdn.coverr.co/videos/coverr-aerial-view-of-a-city-1562614991912/1080p.mp4" type="video/mp4">
+            </video>
+            
+            <!-- Vignette & Dark Overlay Gradients -->
+            <div class="absolute inset-0 bg-gradient-to-t from-darkBg via-darkBg/30 to-black/50"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-darkBg/80 via-transparent to-darkBg/60"></div>
+        </div>
+
+        <!-- Hero Main Typography -->
+        <div class="max-w-7xl mx-auto w-full pt-12 md:pt-16">
+            <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight max-w-4xl leading-[1.12] text-white/95">
+                Building landmark infrastructure <br class="hidden sm:inline">
+                <span class="font-normal text-white">across global markets</span>
+            </h1>
+        </div>
+
+        <!-- Hero Bottom Interactive Bar -->
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-end mt-16 lg:mt-0">
+            
+            <!-- Left Side: Category Tags Filter Pills -->
+            <div class="lg:col-span-5 flex flex-wrap gap-2.5">
+                <button onclick="setActiveCategory(this, 'all')" class="glass-pill active px-5 py-2.5 rounded-full text-sm font-medium">All Sectors</button>
+                <button onclick="setActiveCategory(this, 'construction')" class="glass-pill px-5 py-2.5 rounded-full text-sm font-medium text-white/90">Construction</button>
+                <button onclick="setActiveCategory(this, 'agriculture')" class="glass-pill px-5 py-2.5 rounded-full text-sm font-medium text-white/90">Agriculture</button>
+                <button onclick="setActiveCategory(this, 'trade')" class="glass-pill px-5 py-2.5 rounded-full text-sm font-medium text-white/90">Import & Export</button>
+                <button onclick="setActiveCategory(this, 'equipment')" class="glass-pill px-5 py-2.5 rounded-full text-sm font-medium text-white/90">Farm Equipment</button>
+                <button onclick="setActiveCategory(this, 'fmcg')" class="glass-pill px-5 py-2.5 rounded-full text-sm font-medium text-white/90">Cosmetics & Food</button>
+            </div>
+
+            <!-- Right Side: Project Slider & Index Progress -->
+            <div class="lg:col-span-7 flex flex-col gap-3">
+                
+                <!-- Progress Line & Step Numbers -->
+                <div class="flex items-center justify-between text-xs font-mono text-white/60 px-1">
+                    <span id="slider-step-num">01</span>
+                    <div class="flex-1 mx-4 h-[1px] bg-white/20 relative">
+                        <div id="slider-progress-bar" class="absolute top-0 left-0 h-full bg-white w-1/3 transition-all duration-500"></div>
+                    </div>
+                    <span>03</span>
+                </div>
+
+                <!-- Featured Project Cards Horizontal Slider -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    
+                    <!-- Card 1 -->
+                    <div onclick="selectProject(0)" id="proj-card-0" class="glass-card p-3 rounded-2xl flex items-center gap-3 cursor-pointer border-white/30 hover:border-white/60 transition group">
+                        <div class="w-20 h-16 rounded-xl overflow-hidden flex-shrink-0 relative">
+                            <img src="https://i.pinimg.com/1200x/e5/c9/b1/e5c9b143adfe36e16e39d2874aa93602.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="Construction and infrastructure">
+                        </div>
+                        <div class="overflow-hidden">
+                            <h4 class="text-sm font-semibold text-white truncate">Construction & Trade</h4>
+                            <p class="text-xs text-mutedText mt-0.5">Infrastructure and general merchandise import/export</p>
+                            <span class="inline-block mt-1 text-[11px] text-white/70 font-mono">Our Operations</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div onclick="selectProject(1)" id="proj-card-1" class="glass-card p-3 rounded-2xl flex items-center gap-3 cursor-pointer hover:border-white/40 transition group opacity-75 hover:opacity-100">
+                        <div class="w-20 h-16 rounded-xl overflow-hidden flex-shrink-0 relative">
+                            <img src="https://i.pinimg.com/1200x/10/36/39/10363978bf101a0104d5a0c8d76a7783.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="Agriculture and commercial goods">
+                        </div>
+                        <div class="overflow-hidden">
+                            <h4 class="text-sm font-semibold text-white truncate">Agriculture & Goods</h4>
+                            <p class="text-xs text-mutedText mt-0.5">Farm products, inputs & equipment, cosmetics, food and more</p>
+                            <span class="inline-block mt-1 text-[11px] text-white/70 font-mono">Our Operations</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========== EDITORIAL ABOUT US SECTION ========== -->
+    <section id="about" class="relative py-24 px-4 md:px-8 max-w-7xl mx-auto border-t border-white/10 mt-8 overflow-hidden">
+        <video class="absolute inset-0 z-0 w-full h-full object-cover opacity-40" autoplay muted loop playsinline>
+            <source src="https://www.pexels.com/download/video/10213235/" type="video/mp4">
+        </video>
+        <div class="absolute inset-0 z-0 bg-darkBg/50"></div>
+
+        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            
+            <!-- Left Column: Section Index & Intro Paragraph -->
+            <div class="lg:col-span-4 flex flex-col justify-between h-full space-y-8">
+                <div>
+                    <span class="text-xs font-mono text-white/50 tracking-wider block mb-2">(01)</span>
+                    <h3 class="text-xl font-medium text-white tracking-wide">About Us</h3>
+                </div>
+
+                <p class="text-sm text-mutedText leading-relaxed max-w-sm">
+                    We ardently strive to integrate landmark civil engineering, modern agricultural innovation, and international trade networks. We weave a tapestry of structural excellence and high-value investment with the timeless essence of global partnership.
+                </p>
+
+                <div class="pt-4">
+                    <a href="sectors.html" class="inline-flex items-center gap-3 border border-white/30 hover:border-white px-6 py-3 rounded-full text-xs font-bold tracking-widest uppercase transition group">
+                        <span>EXPLORE SERVICES</span>
+                        <div class="w-6 h-6 rounded-full bg-white text-darkBg flex items-center justify-center text-xs group-hover:translate-x-1 transition-transform">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Column: High-Impact Editorial Statement -->
+            <div class="lg:col-span-8">
+                <h2 class="text-2xl sm:text-4xl md:text-5xl font-light leading-tight text-white/80">
+                    <strong class="font-bold text-white">OSMUT Construction & Investment</strong> is driven by a deep passion for <strong class="font-normal text-white underline underline-offset-8 decoration-white/30">building resilient infrastructure</strong> and <strong class="font-normal text-white">empowering regional trade</strong> with unyielding integrity and precision.
+                </h2>
+
+                <div class="mt-12 grid grid-cols-2 sm:grid-cols-3 gap-6 pt-8 border-t border-white/10">
+                    <div>
+                        <span class="text-3xl font-bold text-white block mb-1">15+</span>
+                        <span class="text-xs text-mutedText uppercase tracking-wider">Years Experience</span>
+                    </div>
+                    <div>
+                        <span class="text-3xl font-bold text-white block mb-1">240+</span>
+                        <span class="text-xs text-mutedText uppercase tracking-wider">Projects Completed</span>
+                    </div>
+                    <div>
+                        <span class="text-3xl font-bold text-white block mb-1">6</span>
+                        <span class="text-xs text-mutedText uppercase tracking-wider">Core Sectors</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========== BUSINESS SECTORS BENTO SHOWCASE ========== -->
+    <section id="sectors" class="py-20 px-4 md:px-8 max-w-7xl mx-auto border-t border-white/10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+            <div>
+                <span class="text-xs font-mono text-white/50 tracking-wider block mb-2">(02)</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Multisector Operations</h2>
+            </div>
+            <p class="text-sm text-mutedText max-w-md">
+                Diversified engineering and commerce portfolio serving public works, agricultural hubs, and international logistics pipelines.
+            </p>
+        </div>
+
+        <!-- Bento Grid Layout -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- Card 1: Construction -->
+            <div class="glass-card rounded-3xl p-6 flex flex-col justify-between h-96 relative overflow-hidden group border-white/10 hover:border-white/30 transition">
+                <img src="https://i.pinimg.com/736x/88/ff/5e/88ff5e9df5987aa47ffc7950b08e0202.jpg" class="absolute inset-0 w-full h-full object-cover filter brightness-[0.35] group-hover:scale-105 transition duration-700 -z-10" alt="Construction">
+                <div class="flex justify-between items-start">
+                    <span class="glass-pill px-3 py-1 rounded-full text-xs font-mono">01 / ENGINEERING</span>
+                    <div class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-xs group-hover:bg-white group-hover:text-darkBg transition">
+                        <i class="fa-solid fa-arrow-up-right"></i>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-2">Civil Construction</h3>
+                    <p class="text-xs text-white/70 leading-relaxed">High-rise commercial towers, residential estates, road infrastructure, and industrial facilities in West Africa.</p>
+                    <a href="sectors.html" class="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full border border-white/40 text-xs font-semibold text-white hover:bg-white hover:text-darkBg transition" aria-label="Explore Civil Construction sector">Explore sector <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Card 2: Agriculture & Farm Equipment -->
+            <div class="glass-card rounded-3xl p-6 flex flex-col justify-between h-96 relative overflow-hidden group border-white/10 hover:border-white/30 transition">
+                <img src="https://i.pinimg.com/1200x/ee/41/f2/ee41f20aa5cb310e8b3e0a1aa5560c68.jpg" class="absolute inset-0 w-full h-full object-cover filter brightness-[0.35] group-hover:scale-105 transition duration-700 -z-10" alt="Agriculture">
+                <div class="flex justify-between items-start">
+                    <span class="glass-pill px-3 py-1 rounded-full text-xs font-mono">02 / AGRIBUSINESS</span>
+                    <div class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-xs group-hover:bg-white group-hover:text-darkBg transition">
+                        <i class="fa-solid fa-arrow-up-right"></i>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-2">Agriculture & Machinery</h3>
+                    <p class="text-xs text-white/70 leading-relaxed">Commercial farming, supply chain development, and heavy agricultural equipment distribution.</p>
+                    <a href="sectors.html" class="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full border border-white/40 text-xs font-semibold text-white hover:bg-white hover:text-darkBg transition" aria-label="Explore Agriculture and Machinery sector">Explore sector <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Card 3: Global Trade & Logistics -->
+            <div class="glass-card rounded-3xl p-6 flex flex-col justify-between h-96 relative overflow-hidden group border-white/10 hover:border-white/30 transition">
+                <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover filter brightness-[0.35] group-hover:scale-105 transition duration-700 -z-10" alt="Trade">
+                <div class="flex justify-between items-start">
+                    <span class="glass-pill px-3 py-1 rounded-full text-xs font-mono">03 / TRADE</span>
+                    <div class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-xs group-hover:bg-white group-hover:text-darkBg transition">
+                        <i class="fa-solid fa-arrow-up-right"></i>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-2">Import & Export</h3>
+                    <p class="text-xs text-white/70 leading-relaxed">Cross-border freight logistics, cosmetics sourcing, packaged food distribution, and commodity trade.</p>
+                    <a href="sectors.html" class="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full border border-white/40 text-xs font-semibold text-white hover:bg-white hover:text-darkBg transition" aria-label="Explore Import and Export sector">Explore sector <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========== FOOTER / CONTACT SECTION ========== -->
+    <footer id="contact" class="py-20 px-4 md:px-8 max-w-7xl mx-auto border-t border-white/10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-7 space-y-6">
+                <span class="text-xs font-mono text-white/50 tracking-wider block">(04) Get In Touch</span>
+                <h2 class="text-3xl sm:text-5xl font-light leading-tight text-white">
+                    Ready to build your next <br>
+                    <span class="font-bold">landmark investment?</span>
+                </h2>
+                <p class="text-sm text-mutedText max-w-lg leading-relaxed">
+                    Connect with our engineering and commercial export team in Ghana. Let's discuss partnership opportunities.
+                </p>
+            </div>
+
+            <div class="lg:col-span-5 glass-card p-8 rounded-3xl space-y-6">
+                <div>
+                    <label class="block text-xs font-mono text-white/70 mb-2 uppercase">Your Name</label>
+                    <input type="text" placeholder="Name " class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono text-white/70 mb-2 uppercase">Email Address</label>
+                    <input type="email" placeholder="Email" class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono text-white/70 mb-2 uppercase">Project Brief / Inquiry</label>
+                    <textarea rows="3" placeholder="Tell us about your project requirements..." class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition"></textarea>
+                </div>
+                <button type="button" onclick="handleFormSubmit()" class="w-full bg-white text-darkBg py-4 rounded-full font-bold text-sm tracking-wide hover:bg-white/90 transition shadow-lg flex items-center justify-center gap-2">
+                    <span>SEND INQUIRY</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+                <p id="form-msg" class="text-xs text-center text-emerald-400 hidden">Thank you! Your message has been submitted successfully.</p>
+            </div>
+
+        </div>
+
+        <div class="mt-20 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center text-xs text-mutedText gap-4">
+            <p>© 2026 OSMUT Construction & Investment. All rights reserved.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-white transition">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition">Terms of Service</a>
+                <a href="#" class="hover:text-white transition">Accra, Ghana</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========== INTERACTIVE SCRIPT LOGIC ========== -->
+    <script>
+        // ============================================================
+        // MOBILE MENU TOGGLE
+        // ============================================================
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenuPanel = document.getElementById('mobileMenuPanel');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        const body = document.body;
+
+        function toggleMobileMenu() {
+            const isOpen = mobileMenuPanel.classList.contains('open');
+            if (isOpen) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        }
+
+        function openMobileMenu() {
+            mobileMenuPanel.classList.add('open');
+            mobileMenuOverlay.classList.add('open');
+            mobileMenuBtn.classList.add('active');
+            body.classList.add('menu-open');
+            mobileMenuBtn.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeMobileMenu() {
+            mobileMenuPanel.classList.remove('open');
+            mobileMenuOverlay.classList.remove('open');
+            mobileMenuBtn.classList.remove('active');
+            body.classList.remove('menu-open');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && mobileMenuPanel.classList.contains('open')) {
+                closeMobileMenu();
+            }
+        });
+
+        // Close mobile menu when a nav link is clicked
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                closeMobileMenu();
+            });
+        });
+
+        // Close menu when resizing to desktop
+        window.addEventListener('resize', function () {
+            if (window.innerWidth >= 768 && mobileMenuPanel.classList.contains('open')) {
+                closeMobileMenu();
+            }
+        });
+
+        // ============================================================
+        // PROJECT SLIDER (existing logic)
+        // ============================================================
+        const projectsData = [
+            {
+                title: "Accra Commercial Tower",
+                image: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?q=80&w=2000&auto=format&fit=crop",
+                step: "01",
+                progress: "33%"
+            },
+            {
+                title: "Volta Agribusiness Hub",
+                image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000&auto=format&fit=crop",
+                step: "02",
+                progress: "66%"
+            },
+            {
+                title: "West Africa Trade Corridor",
+                image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2000&auto=format&fit=crop",
+                step: "03",
+                progress: "100%"
+            }
+        ];
+
+        let currentProjIndex = 0;
+
+        function selectProject(index) {
+            currentProjIndex = index;
+            const heroBgImg = document.getElementById('hero-bg-img');
+            const stepNum = document.getElementById('slider-step-num');
+            const progressBar = document.getElementById('slider-progress-bar');
+
+            // Update Image with Smooth Transition
+            if (heroBgImg) {
+                heroBgImg.style.opacity = '0.4';
+                setTimeout(() => {
+                    heroBgImg.src = projectsData[index].image;
+                    heroBgImg.style.opacity = '1';
+                }, 250);
+            }
+
+            // Update Progress Step
+            stepNum.innerText = projectsData[index].step;
+            progressBar.style.width = projectsData[index].progress;
+
+            // Highlight Active Card
+            document.querySelectorAll('[id^="proj-card-"]').forEach((card, idx) => {
+                if (idx === index) {
+                    card.classList.add('border-white/30');
+                    card.classList.remove('opacity-75');
+                } else {
+                    card.classList.remove('border-white/30');
+                    card.classList.add('opacity-75');
+                }
+            });
+        }
+
+        // Category Pill Filter Switch
+        function setActiveCategory(btnElement, category) {
+            const pills = btnElement.parentElement.querySelectorAll('.glass-pill');
+            pills.forEach(p => {
+                p.classList.remove('active', 'bg-white', 'text-darkBg');
+                p.classList.add('text-white/90');
+            });
+
+            btnElement.classList.add('active');
+            btnElement.classList.remove('text-white/90');
+        }
+
+        // Simple Form Submission Handler
+        function handleFormSubmit() {
+            const msg = document.getElementById('form-msg');
+            msg.classList.remove('hidden');
+            setTimeout(() => {
+                msg.classList.add('hidden');
+            }, 4000);
+        }
+    </script>
+</body>
+</html>

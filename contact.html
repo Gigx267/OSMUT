@@ -1,0 +1,939 @@
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSMUT Contact Us · Let's Build, Trade, Invest & Grow Together</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        darkBg: '#0f1013',
+                        cardBg: '#17181c',
+                        glassBg: 'rgba(255, 255, 255, 0.08)',
+                        glassBorder: 'rgba(255, 255, 255, 0.15)',
+                        glassPill: 'rgba(255, 255, 255, 0.12)',
+                        mutedText: '#a0a5ad'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f1013;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Frosted Glass UI Utilities */
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-pill:hover {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .glass-pill.active {
+            background: #ffffff;
+            color: #0f1013;
+            border-color: #ffffff;
+            font-weight: 600;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1013;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Subtle floating animation for badges */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+        .float-badge {
+            animation: float 5s ease-in-out infinite;
+        }
+        .float-badge-delay {
+            animation: float 6s ease-in-out infinite;
+            animation-delay: 1s;
+        }
+
+        /* Input focus glow */
+        .contact-input:focus {
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
+            outline: none;
+        }
+
+        /* Contact channel card hover icon */
+        .channel-icon {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover .channel-icon {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Map container */
+        .map-container {
+            filter: grayscale(100%) invert(92%) contrast(83%);
+            border-radius: 1.5rem;
+            transition: filter 0.5s ease;
+        }
+        .map-container:hover {
+            filter: grayscale(80%) invert(88%) contrast(90%);
+        }
+
+        /* Divider line */
+        .divider-line {
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+            height: 1px;
+        }
+
+        /* ========== MOBILE NAVIGATION STYLES ========== */
+
+        /* Hamburger button */
+        .mobile-menu-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mobile-menu-btn:hover,
+        .mobile-menu-btn.active {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        /* Hamburger lines */
+        .hamburger-line {
+            display: block;
+            width: 20px;
+            height: 1.5px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: center;
+        }
+        .mobile-menu-btn.active .hamburger-line:nth-child(1) {
+            transform: translateY(6.5px) rotate(45deg);
+        }
+        .mobile-menu-btn.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .mobile-menu-btn.active .hamburger-line:nth-child(3) {
+            transform: translateY(-6.5px) rotate(-45deg);
+        }
+
+        /* Mobile menu overlay */
+        .mobile-menu-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 45;
+            background: rgba(10, 11, 14, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .mobile-menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Mobile menu panel */
+        .mobile-menu-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 380px;
+            z-index: 46;
+            background: rgba(23, 24, 28, 0.97);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-left: 1px solid rgba(255, 255, 255, 0.12);
+            transform: translateX(100%);
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .mobile-menu-panel.open {
+            transform: translateX(0);
+        }
+
+        /* Mobile menu links */
+        .mobile-nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 1.05rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            transition: all 0.25s ease;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease, color 0.25s ease, padding-left 0.25s ease;
+        }
+        .mobile-nav-link:hover,
+        .mobile-nav-link:active {
+            color: #ffffff;
+            padding-left: 0.5rem;
+        }
+        .mobile-nav-link i {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.35);
+            transition: all 0.25s ease;
+        }
+        .mobile-nav-link:hover i {
+            color: #ffffff;
+            transform: translateX(4px);
+        }
+        .mobile-nav-link.active {
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .mobile-nav-link.active i {
+            color: #ffffff;
+        }
+
+        /* Staggered link animation */
+        .mobile-menu-panel.open .mobile-nav-link {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(1) { transition-delay: 0.06s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(2) { transition-delay: 0.10s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(3) { transition-delay: 0.14s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(4) { transition-delay: 0.18s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(5) { transition-delay: 0.22s; }
+
+        /* Prevent body scroll when menu open */
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* Mobile menu footer */
+        .mobile-menu-footer {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease 0.3s, transform 0.4s ease 0.3s;
+        }
+        .mobile-menu-panel.open .mobile-menu-footer {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-white selection:text-black">
+
+    <!-- ========== TOP NAVIGATION HEADER ========== -->
+    <header class="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 py-5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-3 text-white font-bold text-xl tracking-wider">
+                <div class="w-9 h-9 glass-pill rounded-xl flex items-center justify-center text-white border border-white/20">
+                    <i class="fa-solid fa-cubes text-sm"></i>
+                </div>
+                <span>OSMUT</span>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden md:flex items-center gap-1 glass-nav px-6 py-2.5 rounded-full text-sm font-medium text-white/80">
+                <a href="index.html" class="px-4 py-1 hover:text-white transition">Home</a>
+                <span class="text-white/20">|</span>
+                <a href="sectors.html" class="px-4 py-1 hover:text-white transition">Sectors</a>
+                <span class="text-white/20">|</span>
+                <a href="projects.html" class="px-4 py-1 hover:text-white transition">Projects</a>
+                <span class="text-white/20">|</span>
+                <a href="about.html" class="px-4 py-1 hover:text-white transition">About Us</a>
+                <span class="text-white/20">|</span>
+                <a href="contact.html" class="px-4 py-1 text-white font-semibold border-b-2 border-white/70">Contact Us</a>
+            </nav>
+
+            <!-- Desktop Book a Call Button -->
+            <a href="Booking.html" class="hidden md:flex items-center gap-3 bg-white text-darkBg px-5 py-2.5 rounded-full font-semibold text-sm hover:bg-white/90 transition shadow-lg group">
+                <span>BOOK A CALL</span>
+                <div class="w-6 h-6 rounded-full bg-darkBg text-white flex items-center justify-center text-xs group-hover:rotate-45 transition-transform duration-300">
+                    <i class="fa-solid fa-arrow-up-right"></i>
+                </div>
+            </a>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="mobileMenuBtn" onclick="toggleMobileMenu()" 
+                    class="mobile-menu-btn md:hidden flex flex-col items-center justify-center gap-[5px] w-11 h-11 rounded-xl"
+                    aria-label="Toggle navigation menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ========== MOBILE MENU OVERLAY ========== -->
+    <div id="mobileMenuOverlay" class="mobile-menu-overlay" onclick="closeMobileMenu()"></div>
+
+    <!-- ========== MOBILE MENU PANEL ========== -->
+    <div id="mobileMenuPanel" class="mobile-menu-panel">
+        <div class="flex flex-col h-full p-6">
+            <!-- Panel Header -->
+            <div class="flex items-center justify-between mb-8">
+                <a href="index.html" class="flex items-center gap-3 text-white font-bold text-lg tracking-wider">
+                    <div class="w-9 h-9 glass-pill rounded-xl flex items-center justify-center text-white border border-white/20">
+                        <i class="fa-solid fa-cubes text-sm"></i>
+                    </div>
+                    <span>OSMUT</span>
+                </a>
+                <button onclick="closeMobileMenu()" 
+                        class="w-10 h-10 rounded-xl glass-pill flex items-center justify-center text-white/70 hover:text-white transition"
+                        aria-label="Close menu">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex flex-col">
+                <a href="index.html" class="mobile-nav-link">
+                    <span>Home</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="sectors.html" class="mobile-nav-link">
+                    <span>Sectors</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="projects.html" class="mobile-nav-link">
+                    <span>Projects</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="about.html" class="mobile-nav-link">
+                    <span>About Us</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="contact.html" class="mobile-nav-link active">
+                    <span>Contact Us</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            </nav>
+
+            <!-- Panel Footer: Book a Call + Contact -->
+            <div class="mobile-menu-footer mt-auto pt-8 space-y-5">
+                <!-- Book a Call Button -->
+                <a href="Booking.html" class="flex items-center justify-between gap-3 bg-white text-darkBg px-5 py-3.5 rounded-full font-semibold text-sm hover:bg-white/90 transition shadow-lg group w-full">
+                    <span>BOOK A CALL</span>
+                    <div class="w-6 h-6 rounded-full bg-darkBg text-white flex items-center justify-center text-xs group-hover:rotate-45 transition-transform duration-300">
+                        <i class="fa-solid fa-arrow-up-right"></i>
+                    </div>
+                </a>
+
+                <!-- Contact quick info -->
+                <div class="space-y-2.5">
+                    <p class="text-xs text-white/50 flex items-center gap-2.5">
+                        <i class="fa-solid fa-location-dot text-white/30 text-[10px] w-3"></i>
+                        Airport Residential Area, Accra, Ghana
+                    </p>
+                    <p class="text-xs text-white/50 flex items-center gap-2.5">
+                        <i class="fa-regular fa-envelope text-white/30 text-[10px] w-3"></i>
+                        info@osmut.com
+                    </p>
+                    <p class="text-xs text-white/50 flex items-center gap-2.5">
+                        <i class="fa-solid fa-phone text-white/30 text-[10px] w-3"></i>
+                        +233 30 274 0000
+                    </p>
+                </div>
+
+                <!-- Social Icons -->
+                <div class="flex gap-2.5 pt-1">
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in text-xs"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="Twitter / X">
+                        <i class="fa-brands fa-x-twitter text-xs"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="Facebook">
+                        <i class="fa-brands fa-facebook-f text-xs"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="Instagram">
+                        <i class="fa-brands fa-instagram text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== HERO / PAGE TITLE ========== -->
+    <section class="relative pt-36 pb-12 px-4 md:px-8 max-w-7xl mx-auto">
+        <div class="absolute inset-0 -z-10 opacity-20">
+            <div class="absolute top-0 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-1/4 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
+        </div>
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div class="max-w-2xl">
+                <span class="text-xs font-mono text-white/50 tracking-wider block mb-2">(05) CONTACT OSMUT</span>
+                <h1 class="text-4xl sm:text-6xl font-light text-white leading-tight">
+                    Let's build, trade,<br>
+                    <span class="font-bold">invest & grow together.</span>
+                </h1>
+                <p class="text-sm text-mutedText leading-relaxed mt-6 max-w-lg">
+                    Whether you are seeking a construction partner, a supplier of commercial goods, an agricultural trading partner, or a business interested in exploring investment opportunities — OSMUT welcomes the opportunity to connect with you.
+                </p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <span class="glass-pill float-badge px-4 py-2 rounded-full text-xs font-mono text-white/80 flex items-center gap-2">
+                    <i class="fa-solid fa-location-dot text-white/50"></i> Accra, Ghana
+                </span>
+                <span class="glass-pill float-badge-delay px-4 py-2 rounded-full text-xs font-mono text-white/80 flex items-center gap-2">
+                    <i class="fa-regular fa-clock text-white/50"></i> Mon – Fri, 8am – 5pm
+                </span>
+                <span class="glass-pill px-4 py-2 rounded-full text-xs font-mono text-white/80 flex items-center gap-2">
+                    <i class="fa-solid fa-globe text-white/50"></i> International Enquiries Welcome
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CONTACT CHANNELS (Quick Cards) ========== -->
+    <section class="px-4 md:px-8 max-w-7xl mx-auto pb-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Phone -->
+            <div class="glass-card rounded-2xl p-5 flex items-start gap-4">
+                <div class="channel-icon w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-phone text-white/70 text-sm"></i>
+                </div>
+                <div>
+                    <h3 class="text-xs font-mono text-white/50 uppercase tracking-wider mb-1">Call Us</h3>
+                    <p class="text-sm text-white/85 font-medium">+233 30 274 0000</p>
+                    <p class="text-xs text-white/50 mt-0.5">Mon – Fri, 8am – 5pm GMT</p>
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="glass-card rounded-2xl p-5 flex items-start gap-4">
+                <div class="channel-icon w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fa-regular fa-envelope text-white/70 text-sm"></i>
+                </div>
+                <div>
+                    <h3 class="text-xs font-mono text-white/50 uppercase tracking-wider mb-1">Email Us</h3>
+                    <p class="text-sm text-white/85 font-medium">info@osmut.com</p>
+                    <p class="text-xs text-white/50 mt-0.5">Partnerships & general enquiries</p>
+                </div>
+            </div>
+
+            <!-- WhatsApp -->
+            <div class="glass-card rounded-2xl p-5 flex items-start gap-4">
+                <div class="channel-icon w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fa-brands fa-whatsapp text-white/70 text-sm"></i>
+                </div>
+                <div>
+                    <h3 class="text-xs font-mono text-white/50 uppercase tracking-wider mb-1">WhatsApp</h3>
+                    <p class="text-sm text-white/85 font-medium">+233 24 000 0000</p>
+                    <p class="text-xs text-white/50 mt-0.5">Quick responses during business hours</p>
+                </div>
+            </div>
+
+            <!-- Location -->
+            <div class="glass-card rounded-2xl p-5 flex items-start gap-4">
+                <div class="channel-icon w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-location-dot text-white/70 text-sm"></i>
+                </div>
+                <div>
+                    <h3 class="text-xs font-mono text-white/50 uppercase tracking-wider mb-1">Visit Us</h3>
+                    <p class="text-sm text-white/85 font-medium">Head Office</p>
+                    <p class="text-xs text-white/50 mt-0.5">Airport Residential Area, Accra, Ghana</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== MAIN CONTACT FORM + SIDEBAR ========== -->
+    <section class="px-4 md:px-8 max-w-7xl mx-auto pb-20">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+            <!-- Left: Contact Form -->
+            <div class="lg:col-span-7">
+                <div class="glass-card rounded-3xl p-6 md:p-10">
+                    <div class="mb-8">
+                        <span class="text-xs font-mono text-white/50 tracking-wider block mb-2">SEND A MESSAGE</span>
+                        <h2 class="text-2xl md:text-3xl font-bold text-white">Tell us about your project or inquiry</h2>
+                        <p class="text-sm text-white/50 mt-2">Fill in the form below and our team will get back to you within 24–48 hours.</p>
+                    </div>
+
+                    <form id="contactForm" onsubmit="handleContactSubmit(event)" class="space-y-5">
+                        <!-- Name & Company -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-mono text-white/60 mb-2 uppercase">Full Name <span class="text-white/30">*</span></label>
+                                <input type="text" required placeholder="Your full name" class="contact-input w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 transition">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-mono text-white/60 mb-2 uppercase">Company / Organization</label>
+                                <input type="text" placeholder="Company name (optional)" class="contact-input w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 transition">
+                            </div>
+                        </div>
+
+                        <!-- Email & Phone -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-mono text-white/60 mb-2 uppercase">Email Address <span class="text-white/30">*</span></label>
+                                <input type="email" required placeholder="you@company.com" class="contact-input w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 transition">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-mono text-white/60 mb-2 uppercase">Phone Number</label>
+                                <input type="tel" placeholder="+233 XX XXX XXXX" class="contact-input w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 transition">
+                            </div>
+                        </div>
+
+                        <!-- Inquiry Type -->
+                        <div>
+                            <label class="block text-xs font-mono text-white/60 mb-2 uppercase">Nature of Inquiry <span class="text-white/30">*</span></label>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="inquiryType" value="construction" class="peer sr-only" checked>
+                                    <div class="glass-pill px-3 py-2.5 rounded-xl text-xs text-center text-white/70 peer-checked:bg-white peer-checked:text-darkBg peer-checked:font-semibold transition">
+                                        Construction
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="inquiryType" value="trade" class="peer sr-only">
+                                    <div class="glass-pill px-3 py-2.5 rounded-xl text-xs text-center text-white/70 peer-checked:bg-white peer-checked:text-darkBg peer-checked:font-semibold transition">
+                                        Trade
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="inquiryType" value="agriculture" class="peer sr-only">
+                                    <div class="glass-pill px-3 py-2.5 rounded-xl text-xs text-center text-white/70 peer-checked:bg-white peer-checked:text-darkBg peer-checked:font-semibold transition">
+                                        Agriculture
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="inquiryType" value="investment" class="peer sr-only">
+                                    <div class="glass-pill px-3 py-2.5 rounded-xl text-xs text-center text-white/70 peer-checked:bg-white peer-checked:text-darkBg peer-checked:font-semibold transition">
+                                        Investment
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Subject -->
+                        <div>
+                            <label class="block text-xs font-mono text-white/60 mb-2 uppercase">Subject <span class="text-white/30">*</span></label>
+                            <input type="text" required placeholder="Brief subject of your message" class="contact-input w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 transition">
+                        </div>
+
+                        <!-- Message -->
+                        <div>
+                            <label class="block text-xs font-mono text-white/60 mb-2 uppercase">Your Message <span class="text-white/30">*</span></label>
+                            <textarea required rows="5" placeholder="Tell us about your project requirements, partnership interest, or general inquiry..." class="contact-input w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 transition resize-none"></textarea>
+                        </div>
+
+                        <!-- Consent checkbox -->
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" id="consent" class="mt-1 w-4 h-4 rounded border-white/30 bg-white/5 text-white focus:ring-0 focus:ring-offset-0 cursor-pointer accent-white">
+                            <label for="consent" class="text-xs text-white/50 leading-relaxed cursor-pointer">
+                                I consent to OSMUT Construction and Investment contacting me regarding this inquiry. My information will be handled in accordance with the company's privacy policy.
+                            </label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="w-full bg-white text-darkBg py-4 rounded-full font-bold text-sm tracking-wide hover:bg-white/90 transition shadow-lg flex items-center justify-center gap-2 group">
+                            <span>SEND MESSAGE</span>
+                            <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+
+                        <!-- Success Message -->
+                        <div id="contact-success" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-center">
+                            <p class="text-sm text-emerald-300 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-circle-check"></i>
+                                Thank you! Your message has been sent successfully. We'll be in touch shortly.
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right: Sidebar Info -->
+            <div class="lg:col-span-5 space-y-6">
+
+                <!-- Office Hours & Response Time -->
+                <div class="glass-card rounded-3xl p-6 md:p-8">
+                    <h3 class="text-lg font-bold text-white mb-5 flex items-center gap-2">
+                        <i class="fa-regular fa-clock text-white/50 text-sm"></i>
+                        Office Hours
+                    </h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between items-center pb-3 border-b border-white/10">
+                            <span class="text-white/60">Monday – Friday</span>
+                            <span class="text-white/90 font-medium">8:00 AM – 5:00 PM</span>
+                        </div>
+                        <div class="flex justify-between items-center pb-3 border-b border-white/10">
+                            <span class="text-white/60">Saturday</span>
+                            <span class="text-white/90 font-medium">9:00 AM – 1:00 PM</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-white/60">Sunday & Public Holidays</span>
+                            <span class="text-white/50 italic">Closed</span>
+                        </div>
+                    </div>
+                    <div class="mt-5 pt-5 border-t border-white/10">
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid fa-bolt text-white/40 text-xs mt-1"></i>
+                            <p class="text-xs text-white/50 leading-relaxed">
+                                We aim to respond to all enquiries within <strong class="text-white/80">24–48 business hours</strong>. For urgent matters, please call us directly.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Department Contacts -->
+                <div class="glass-card rounded-3xl p-6 md:p-8">
+                    <h3 class="text-lg font-bold text-white mb-5 flex items-center gap-2">
+                        <i class="fa-solid fa-users text-white/50 text-sm"></i>
+                        Department Contacts
+                    </h3>
+                    <div class="space-y-4">
+                        <!-- Construction -->
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg glass-pill flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <i class="fa-regular fa-building text-white/60 text-[10px]"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-white/85 font-medium">Construction & Projects</p>
+                                <p class="text-xs text-white/50 mt-0.5">projects@osmut.com</p>
+                            </div>
+                        </div>
+                        <!-- Trade -->
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg glass-pill flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <i class="fa-solid fa-ship text-white/60 text-[10px]"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-white/85 font-medium">Import & Export</p>
+                                <p class="text-xs text-white/50 mt-0.5">trade@osmut.com</p>
+                            </div>
+                        </div>
+                        <!-- Agriculture -->
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg glass-pill flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <i class="fa-solid fa-seedling text-white/60 text-[10px]"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-white/85 font-medium">Agriculture & Farm Inputs</p>
+                                <p class="text-xs text-white/50 mt-0.5">agri@osmut.com</p>
+                            </div>
+                        </div>
+                        <!-- Investments -->
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg glass-pill flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <i class="fa-solid fa-chart-line text-white/60 text-[10px]"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-white/85 font-medium">Investments & Partnerships</p>
+                                <p class="text-xs text-white/50 mt-0.5">invest@osmut.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- International Desk -->
+                <div class="glass-card rounded-3xl p-6 md:p-8">
+                    <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-globe text-white/50 text-sm"></i>
+                        International Enquiries
+                    </h3>
+                    <p class="text-xs text-white/50 leading-relaxed mb-4">
+                        For international suppliers, manufacturers, buyers, and strategic partners, our international desk is ready to assist you.
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-full glass-pill flex items-center justify-center">
+                            <i class="fa-solid fa-headset text-white/70 text-xs"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-white/85 font-medium">global@osmut.com</p>
+                            <p class="text-xs text-white/50">+233 30 274 0001</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== MAP / LOCATION SECTION ========== -->
+    <section class="px-4 md:px-8 max-w-7xl mx-auto pb-20">
+        <div class="glass-card rounded-3xl p-6 md:p-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                <div>
+                    <span class="text-xs font-mono text-white/50 tracking-wider block mb-2">FIND US</span>
+                    <h2 class="text-2xl font-bold text-white">Visit our head office</h2>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-white/50">
+                    <i class="fa-solid fa-location-dot text-white/40"></i>
+                    Airport Residential Area, Accra, Ghana
+                </div>
+            </div>
+            
+            <!-- Embedded Google Map (dark styled via CSS filter) -->
+            <div class="rounded-2xl overflow-hidden border border-white/10 relative">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.985665885747!2d-0.176435!3d5.605424!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNcKwMzYnMTkuNSJOIDDCsDEwJzM1LjIiVw!5e0!3m2!1sen!2sgh!4v1620000000000!5m2!1sen!2sgh" 
+                    width="100%" 
+                    height="400" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade"
+                    class="map-container">
+                </iframe>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+                <div class="glass-pill rounded-xl p-4 flex items-center gap-3">
+                    <i class="fa-solid fa-car text-white/50 text-sm"></i>
+                    <div>
+                        <p class="text-xs text-white/50">Parking</p>
+                        <p class="text-sm text-white/85 font-medium">Free on-site parking available</p>
+                    </div>
+                </div>
+                <div class="glass-pill rounded-xl p-4 flex items-center gap-3">
+                    <i class="fa-solid fa-wheelchair text-white/50 text-sm"></i>
+                    <div>
+                        <p class="text-xs text-white/50">Accessibility</p>
+                        <p class="text-sm text-white/85 font-medium">Wheelchair accessible entrance</p>
+                    </div>
+                </div>
+                <div class="glass-pill rounded-xl p-4 flex items-center gap-3">
+                    <i class="fa-solid fa-bus text-white/50 text-sm"></i>
+                    <div>
+                        <p class="text-xs text-white/50">Public Transport</p>
+                        <p class="text-sm text-white/85 font-medium">Nearby trotro & taxi routes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA BANNER ========== -->
+    <section class="px-4 md:px-8 max-w-7xl mx-auto pb-20">
+        <div class="glass-card rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent"></div>
+            <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
+            <div class="relative z-10">
+                <h3 class="text-2xl md:text-3xl font-bold text-white mb-2">Prefer to talk directly?</h3>
+                <p class="text-sm text-white/60 max-w-lg">Book a call with our team and let's discuss how OSMUT can support your project, trade, or investment goals.</p>
+            </div>
+            <a href="Booking.html" class="relative z-10 flex items-center gap-3 bg-white text-darkBg px-6 py-3.5 rounded-full font-semibold text-sm hover:bg-white/90 transition shadow-lg group flex-shrink-0">
+                <span>BOOK A CALL</span>
+                <div class="w-6 h-6 rounded-full bg-darkBg text-white flex items-center justify-center text-xs group-hover:rotate-45 transition-transform duration-300">
+                    <i class="fa-solid fa-arrow-up-right"></i>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="py-20 px-4 md:px-8 max-w-7xl mx-auto border-t border-white/10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-7 space-y-6">
+                <span class="text-xs font-mono text-white/50 tracking-wider block">(06) OSMUT Construction & Investment</span>
+                <h2 class="text-3xl sm:text-5xl font-light leading-tight text-white">
+                    Building infrastructure.<br>
+                    <span class="font-bold">Connecting markets.</span>
+                </h2>
+                <p class="text-sm text-mutedText max-w-lg leading-relaxed">
+                    A diversified business enterprise committed to delivering quality construction services, facilitating international trade, supplying essential commodities, and creating sustainable investment opportunities.
+                </p>
+                <div class="flex gap-4 pt-2">
+                    <a href="#" class="w-10 h-10 glass-pill rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition" aria-label="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in text-sm"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 glass-pill rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition" aria-label="Twitter / X">
+                        <i class="fa-brands fa-x-twitter text-sm"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 glass-pill rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition" aria-label="Facebook">
+                        <i class="fa-brands fa-facebook-f text-sm"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 glass-pill rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition" aria-label="Instagram">
+                        <i class="fa-brands fa-instagram text-sm"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="lg:col-span-5 glass-card p-8 rounded-3xl space-y-5">
+                <h3 class="text-sm font-bold text-white uppercase tracking-wider">Quick Links</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <a href="index.html" class="text-sm text-white/60 hover:text-white transition">Home</a>
+                    <a href="sectors.html" class="text-sm text-white/60 hover:text-white transition">Sectors</a>
+                    <a href="projects.html" class="text-sm text-white/60 hover:text-white transition">Projects</a>
+                    <a href="about.html" class="text-sm text-white/60 hover:text-white transition">About Us</a>
+                    <a href="contact.html" class="text-sm text-white/60 hover:text-white transition">Contact Us</a>
+                    <a href="Booking.html" class="text-sm text-white/60 hover:text-white transition">Book a Call</a>
+                </div>
+                <div class="divider-line my-2"></div>
+                <div class="space-y-2">
+                    <p class="text-xs text-white/50"><i class="fa-solid fa-location-dot mr-2 text-white/30"></i>Airport Residential Area, Accra, Ghana</p>
+                    <p class="text-xs text-white/50"><i class="fa-regular fa-envelope mr-2 text-white/30"></i>info@osmut.com</p>
+                    <p class="text-xs text-white/50"><i class="fa-solid fa-phone mr-2 text-white/30"></i>+233 30 274 0000</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-20 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center text-xs text-mutedText gap-4">
+            <p>© 2026 OSMUT Construction & Investment. All rights reserved.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-white transition">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition">Terms of Service</a>
+                <a href="#" class="hover:text-white transition">Accra, Ghana</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========== INTERACTIVE SCRIPT LOGIC ========== -->
+    <script>
+        // ============================================================
+        // MOBILE MENU TOGGLE
+        // ============================================================
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenuPanel = document.getElementById('mobileMenuPanel');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        const body = document.body;
+
+        function toggleMobileMenu() {
+            const isOpen = mobileMenuPanel.classList.contains('open');
+            if (isOpen) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        }
+
+        function openMobileMenu() {
+            mobileMenuPanel.classList.add('open');
+            mobileMenuOverlay.classList.add('open');
+            mobileMenuBtn.classList.add('active');
+            body.classList.add('menu-open');
+            mobileMenuBtn.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeMobileMenu() {
+            mobileMenuPanel.classList.remove('open');
+            mobileMenuOverlay.classList.remove('open');
+            mobileMenuBtn.classList.remove('active');
+            body.classList.remove('menu-open');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && mobileMenuPanel.classList.contains('open')) {
+                closeMobileMenu();
+            }
+        });
+
+        // Close mobile menu when a nav link is clicked
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                closeMobileMenu();
+            });
+        });
+
+        // Close menu when resizing to desktop
+        window.addEventListener('resize', function () {
+            if (window.innerWidth >= 768 && mobileMenuPanel.classList.contains('open')) {
+                closeMobileMenu();
+            }
+        });
+
+        // ============================================================
+        // CONTACT FORM SUBMISSION
+        // ============================================================
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const successMsg = document.getElementById('contact-success');
+            successMsg.classList.remove('hidden');
+            document.getElementById('contactForm').reset();
+            setTimeout(() => {
+                successMsg.classList.add('hidden');
+            }, 6000);
+        }
+
+        // ============================================================
+        // FORM HANDLER (Legacy fallback)
+        // ============================================================
+        function handleFormSubmit() {
+            const msg = document.getElementById('form-msg');
+            if (msg) {
+                msg.classList.remove('hidden');
+                setTimeout(() => {
+                    msg.classList.add('hidden');
+                }, 4000);
+            }
+        }
+    </script>
+</body>
+</html>

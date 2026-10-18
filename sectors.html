@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSMUT Sectors · Construction, Trade, Agriculture & More</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        darkBg: '#0f1013',
+                        cardBg: '#17181c',
+                        glassBg: 'rgba(255, 255, 255, 0.08)',
+                        glassBorder: 'rgba(255, 255, 255, 0.15)',
+                        glassPill: 'rgba(255, 255, 255, 0.12)',
+                        mutedText: '#a0a5ad'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f1013;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-pill:hover {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .glass-pill.active {
+            background: #ffffff;
+            color: #0f1013;
+            border-color: #ffffff;
+            font-weight: 600;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Image card overlay */
+        .sector-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.25;
+            transition: opacity 0.5s ease, transform 0.7s ease;
+            z-index: 0;
+        }
+
+        .glass-card:hover .sector-img {
+            opacity: 0.35;
+            transform: scale(1.05);
+        }
+
+        /* Ensure content stays above image */
+        .sector-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Subtle gradient overlay for text readability */
+        .sector-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(15,16,19,0.85) 0%, rgba(15,16,19,0.4) 100%);
+            z-index: 1;
+        }
+
+        /* Modal backdrop with smooth blur */
+        .modal-backdrop {
+            background: rgba(10, 11, 14, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: opacity 0.35s ease;
+        }
+
+        /* Modal panel – glass with slightly more opacity for readability */
+        .modal-panel {
+            background: rgba(23, 24, 28, 0.92);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+        }
+
+        /* Close button style */
+        .modal-close-btn {
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.25s ease;
+        }
+        .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: rotate(90deg);
+        }
+
+        /* Button hover animation */
+        .learn-more-btn {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .learn-more-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            gap: 0.75rem;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1013;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Modal scroll inside */
+        .modal-scroll {
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+        .modal-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+        .modal-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+        }
+
+        /* ========== MOBILE NAVIGATION STYLES ========== */
+
+        /* Hamburger button */
+        .mobile-menu-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mobile-menu-btn:hover,
+        .mobile-menu-btn.active {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        /* Hamburger lines */
+        .hamburger-line {
+            display: block;
+            width: 20px;
+            height: 1.5px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: center;
+        }
+        .mobile-menu-btn.active .hamburger-line:nth-child(1) {
+            transform: translateY(6.5px) rotate(45deg);
+        }
+        .mobile-menu-btn.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .mobile-menu-btn.active .hamburger-line:nth-child(3) {
+            transform: translateY(-6.5px) rotate(-45deg);
+        }
+
+        /* Mobile menu overlay */
+        .mobile-menu-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 45;
+            background: rgba(10, 11, 14, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .mobile-menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Mobile menu panel */
+        .mobile-menu-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 380px;
+            z-index: 46;
+            background: rgba(23, 24, 28, 0.97);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-left: 1px solid rgba(255, 255, 255, 0.12);
+            transform: translateX(100%);
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .mobile-menu-panel.open {
+            transform: translateX(0);
+        }
+
+        /* Mobile menu links */
+        .mobile-nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 1.05rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            transition: all 0.25s ease;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease, color 0.25s ease, padding-left 0.25s ease;
+        }
+        .mobile-nav-link:hover,
+        .mobile-nav-link:active {
+            color: #ffffff;
+            padding-left: 0.5rem;
+        }
+        .mobile-nav-link i {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.35);
+            transition: all 0.25s ease;
+        }
+        .mobile-nav-link:hover i {
+            color: #ffffff;
+            transform: translateX(4px);
+        }
+        .mobile-nav-link.active {
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .mobile-nav-link.active i {
+            color: #ffffff;
+        }
+
+        /* Staggered link animation */
+        .mobile-menu-panel.open .mobile-nav-link {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(1) { transition-delay: 0.06s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(2) { transition-delay: 0.10s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(3) { transition-delay: 0.14s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(4) { transition-delay: 0.18s; }
+        .mobile-menu-panel.open .mobile-nav-link:nth-child(5) { transition-delay: 0.22s; }
+
+        /* Prevent body scroll when menu open */
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* Mobile menu footer */
+        .mobile-menu-footer {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease 0.3s, transform 0.4s ease 0.3s;
+        }
+        .mobile-menu-panel.open .mobile-menu-footer {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-white selection:text-black">
+
+    <!-- ========== TOP NAVIGATION HEADER ========== -->
+    <header class="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 py-5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-3 text-white font-bold text-xl tracking-wider">
+                <div class="w-9 h-9 glass-pill rounded-xl flex items-center justify-center text-white border border-white/20">
+                    <i class="fa-solid fa-cubes text-sm"></i>
+                </div>
+                <span>OSMUT</span>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden md:flex items-center gap-1 glass-nav px-6 py-2.5 rounded-full text-sm font-medium text-white/80">
+                <a href="index.html" class="px-4 py-1 hover:text-white transition">Home</a>
+                <span class="text-white/20">|</span>
+                <a href="sectors.html" class="px-4 py-1 text-white font-semibold border-b-2 border-white/70">Sectors</a>
+                <span class="text-white/20">|</span>
+                <a href="projects.html" class="px-4 py-1 hover:text-white transition">Projects</a>
+                <span class="text-white/20">|</span>
+                <a href="about.html" class="px-4 py-1 hover:text-white transition">About Us</a>
+                <span class="text-white/20">|</span>
+                <a href="contact.html" class="px-4 py-1 hover:text-white transition">Contact Us</a>
+            </nav>
+
+            <!-- Desktop Book a Call Button -->
+            <a href="Booking.html" class="hidden md:flex items-center gap-3 bg-white text-darkBg px-5 py-2.5 rounded-full font-semibold text-sm hover:bg-white/90 transition shadow-lg group">
+                <span>BOOK A CALL</span>
+                <div class="w-6 h-6 rounded-full bg-darkBg text-white flex items-center justify-center text-xs group-hover:rotate-45 transition-transform duration-300">
+                    <i class="fa-solid fa-arrow-up-right"></i>
+                </div>
+            </a>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="mobileMenuBtn" onclick="toggleMobileMenu()" 
+                    class="mobile-menu-btn md:hidden flex flex-col items-center justify-center gap-[5px] w-11 h-11 rounded-xl"
+                    aria-label="Toggle navigation menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ========== MOBILE MENU OVERLAY ========== -->
+    <div id="mobileMenuOverlay" class="mobile-menu-overlay" onclick="closeMobileMenu()"></div>
+
+    <!-- ========== MOBILE MENU PANEL ========== -->
+    <div id="mobileMenuPanel" class="mobile-menu-panel">
+        <div class="flex flex-col h-full p-6">
+            <!-- Panel Header -->
+            <div class="flex items-center justify-between mb-8">
+                <a href="index.html" class="flex items-center gap-3 text-white font-bold text-lg tracking-wider">
+                    <div class="w-9 h-9 glass-pill rounded-xl flex items-center justify-center text-white border border-white/20">
+                        <i class="fa-solid fa-cubes text-sm"></i>
+                    </div>
+                    <span>OSMUT</span>
+                </a>
+                <button onclick="closeMobileMenu()" 
+                        class="w-10 h-10 rounded-xl glass-pill flex items-center justify-center text-white/70 hover:text-white transition"
+                        aria-label="Close menu">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex flex-col">
+                <a href="index.html" class="mobile-nav-link">
+                    <span>Home</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="sectors.html" class="mobile-nav-link active">
+                    <span>Sectors</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="projects.html" class="mobile-nav-link">
+                    <span>Projects</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="about.html" class="mobile-nav-link">
+                    <span>About Us</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+                <a href="contact.html" class="mobile-nav-link">
+                    <span>Contact Us</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            </nav>
+
+            <!-- Panel Footer: Book a Call + Contact -->
+            <div class="mobile-menu-footer mt-auto pt-8 space-y-5">
+                <!-- Book a Call Button -->
+                <a href="Booking.html" class="flex items-center justify-between gap-3 bg-white text-darkBg px-5 py-3.5 rounded-full font-semibold text-sm hover:bg-white/90 transition shadow-lg group w-full">
+                    <span>BOOK A CALL</span>
+                    <div class="w-6 h-6 rounded-full bg-darkBg text-white flex items-center justify-center text-xs group-hover:rotate-45 transition-transform duration-300">
+                        <i class="fa-solid fa-arrow-up-right"></i>
+                    </div>
+                </a>
+
+                <!-- Contact quick info -->
+                <div class="space-y-2.5">
+                    <p class="text-xs text-white/50 flex items-center gap-2.5">
+                        <i class="fa-solid fa-location-dot text-white/30 text-[10px] w-3"></i>
+                        Airport Residential Area, Accra, Ghana
+                    </p>
+                    <p class="text-xs text-white/50 flex items-center gap-2.5">
+                        <i class="fa-regular fa-envelope text-white/30 text-[10px] w-3"></i>
+                        info@osmut.com
+                    </p>
+                    <p class="text-xs text-white/50 flex items-center gap-2.5">
+                        <i class="fa-solid fa-phone text-white/30 text-[10px] w-3"></i>
+                        +233 30 274 0000
+                    </p>
+                </div>
+
+                <!-- Social Icons -->
+                <div class="flex gap-2.5 pt-1">
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in text-xs"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="Twitter / X">
+                        <i class="fa-brands fa-x-twitter text-xs"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="Facebook">
+                        <i class="fa-brands fa-facebook-f text-xs"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 glass-pill rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition" aria-label="Instagram">
+                        <i class="fa-brands fa-instagram text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== SECTORS HERO / PAGE TITLE ========== -->
+    <section class="relative pt-36 pb-10 px-4 md:px-8 max-w-7xl mx-auto">
+        <div class="absolute inset-0 -z-10 opacity-20">
+            <div class="absolute top-0 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-1/4 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
+        </div>
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+                <span class="text-xs font-mono text-white/50 tracking-wider block mb-2">(02) OUR BUSINESS SECTORS</span>
+                <h1 class="text-4xl sm:text-6xl font-light text-white leading-tight">
+                    Diversified operations.<br>
+                    <span class="font-bold">One trusted partner.</span>
+                </h1>
+            </div>
+            <p class="text-sm text-mutedText max-w-md leading-relaxed border-l border-white/20 pl-5">
+                From construction and infrastructure to agriculture, import/export, and commercial investments — we connect markets and create opportunities across Ghana and beyond.
+            </p>
+        </div>
+    </section>
+
+    <!-- ========== SECTORS GRID – ALL 7 CATEGORIES (A–G) WITH IMAGES + LEARN MORE BUTTONS ========== -->
+    <section class="px-4 md:px-8 max-w-7xl mx-auto pb-24">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- A. Construction & Infrastructure -->
+            <div class="glass-card rounded-3xl p-6 flex flex-col h-full border-white/10 hover:border-white/30 transition group overflow-hidden relative min-h-[420px]">
+                <img src="https://i.pinimg.com/1200x/2b/83/0b/2b830b6a85b6e84ccb0730ac8e37e7f9.jpg " 
+                     alt="Construction site with cranes and building" 
+                     class="sector-img">
+                <div class="sector-overlay"></div>
+                
+                <div class="sector-content flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-5">
+                        <span class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono tracking-wider">A / CONSTRUCTION</span>
+                        <i class="fa-regular fa-building text-white/40 text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Construction & Infrastructure</h3>
+                    <p class="text-sm text-white/70 leading-relaxed flex-1">
+                        Residential and commercial building construction, civil engineering, renovation, materials sourcing, and project management. Delivering quality workmanship and value for money.
+                    </p>
+                    <ul class="mt-4 space-y-1.5 text-xs text-white/60">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Residential & commercial buildings</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Civil engineering & infrastructure</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Renovation & maintenance</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Project coordination & contracting</li>
+                    </ul>
+                    <!-- Learn More Button -->
+                    <button onclick="openModal('construction')" 
+                            class="learn-more-btn mt-5 self-start flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/30 text-xs font-semibold text-white hover:text-white transition">
+                        <span>Learn More</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- B. Import & Export of General Goods -->
+            <div class="glass-card rounded-3xl p-6 flex flex-col h-full border-white/10 hover:border-white/30 transition group overflow-hidden relative min-h-[420px]">
+                <img src="https://i.pinimg.com/1200x/b1/39/c7/b139c78f8fba28eb302fc309008d9786.jpg" 
+                     alt="Cargo containers and global trade" 
+                     class="sector-img">
+                <div class="sector-overlay"></div>
+                
+                <div class="sector-content flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-5">
+                        <span class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono tracking-wider">B / TRADE</span>
+                        <i class="fa-solid fa-ship text-white/40 text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Import & Export of General Goods</h3>
+                    <p class="text-sm text-white/70 leading-relaxed flex-1">
+                        Global sourcing and distribution of general merchandise. We connect suppliers, manufacturers, and buyers across international markets with trust and transparency.
+                    </p>
+                    <ul class="mt-4 space-y-1.5 text-xs text-white/60">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> General merchandise import/export</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> International sourcing & procurement</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Wholesale & distribution</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Supplier & buyer relationship development</li>
+                    </ul>
+                    <button onclick="openModal('trade')" 
+                            class="learn-more-btn mt-5 self-start flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/30 text-xs font-semibold text-white hover:text-white transition">
+                        <span>Learn More</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- C. Agriculture and Agricultural Products -->
+            <div class="glass-card rounded-3xl p-6 flex flex-col h-full border-white/10 hover:border-white/30 transition group overflow-hidden relative min-h-[420px]">
+                <img src="https://i.pinimg.com/736x/18/b0/29/18b02956d856df380ba9f5fa633a3957.jpg " 
+                     alt="Golden wheat field and agriculture" 
+                     class="sector-img">
+                <div class="sector-overlay"></div>
+                
+                <div class="sector-content flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-5">
+                        <span class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono tracking-wider">C / AGRIBUSINESS</span>
+                        <i class="fa-solid fa-seedling text-white/40 text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Agriculture & Agricultural Products</h3>
+                    <p class="text-sm text-white/70 leading-relaxed flex-1">
+                        Trading in agricultural commodities, farm inputs, and produce. Supporting farmers, distributors, and agricultural businesses across the value chain.
+                    </p>
+                    <ul class="mt-4 space-y-1.5 text-xs text-white/60">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Agricultural product trading</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Farm inputs sourcing & distribution</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Produce procurement & marketing</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Agricultural investment opportunities</li>
+                    </ul>
+                    <button onclick="openModal('agriculture')" 
+                            class="learn-more-btn mt-5 self-start flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/30 text-xs font-semibold text-white hover:text-white transition">
+                        <span>Learn More</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- D. Farm Materials, Inputs and Equipment -->
+            <div class="glass-card rounded-3xl p-6 flex flex-col h-full border-white/10 hover:border-white/30 transition group overflow-hidden relative min-h-[420px]">
+                <img src="https://i.pinimg.com/736x/b3/e5/3b/b3e53bb867d89fbf19551b4404d98d1f.jpg " 
+                     alt="Tractor and agricultural equipment" 
+                     class="sector-img">
+                <div class="sector-overlay"></div>
+                
+                <div class="sector-content flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-5">
+                        <span class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono tracking-wider">D / EQUIPMENT</span>
+                        <i class="fa-solid fa-tractor text-white/40 text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Farm Materials, Inputs & Equipment</h3>
+                    <p class="text-sm text-white/70 leading-relaxed flex-1">
+                        Supplying farming tools, irrigation materials, implements, and other agricultural inputs to boost productivity and support efficient farming operations.
+                    </p>
+                    <ul class="mt-4 space-y-1.5 text-xs text-white/60">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Farming tools & equipment</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Irrigation materials & accessories</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Agricultural implements</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Crop production & maintenance supplies</li>
+                    </ul>
+                    <button onclick="openModal('equipment')" 
+                            class="learn-more-btn mt-5 self-start flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/30 text-xs font-semibold text-white hover:text-white transition">
+                        <span>Learn More</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- E. Cosmetics and Personal Care Products -->
+            <div class="glass-card rounded-3xl p-6 flex flex-col h-full border-white/10 hover:border-white/30 transition group overflow-hidden relative min-h-[420px]">
+                <img src="https://i.pinimg.com/1200x/4c/bf/58/4cbf581b3a0455d8fb29186402cd8693.jpg " 
+                     alt="Cosmetics and personal care products" 
+                     class="sector-img">
+                <div class="sector-overlay"></div>
+                
+                <div class="sector-content flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-5">
+                        <span class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono tracking-wider">E / COSMETICS</span>
+                        <i class="fa-solid fa-spa text-white/40 text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Cosmetics & Personal Care</h3>
+                    <p class="text-sm text-white/70 leading-relaxed flex-1">
+                        Trading and distribution of beauty, skincare, haircare, and personal hygiene products. We partner with reputable suppliers to meet quality and safety standards.
+                    </p>
+                    <ul class="mt-4 space-y-1.5 text-xs text-white/60">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Beauty & skincare products</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Haircare & personal hygiene</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Beauty accessories</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Cosmetic products & merchandise</li>
+                    </ul>
+                    <button onclick="openModal('cosmetics')" 
+                            class="learn-more-btn mt-5 self-start flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/30 text-xs font-semibold text-white hover:text-white transition">
+                        <span>Learn More</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- F. Food Products and Commodities -->
+            <div class="glass-card rounded-3xl p-6 flex flex-col h-full border-white/10 hover:border-white/30 transition group overflow-hidden relative min-h-[420px]">
+                <img src="https://i.pinimg.com/736x/78/25/2b/78252ba987a8843946d43be6da4c5441.jpg" 
+                     alt="Food products and commodities in a market" 
+                     class="sector-img">
+                <div class="sector-overlay"></div>
+                
+                <div class="sector-content flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-5">
+                        <span class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono tracking-wider">F / FOOD</span>
+                        <i class="fa-solid fa-bowl-food text-white/40 text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Food Products & Commodities</h3>
+                    <p class="text-sm text-white/70 leading-relaxed flex-1">
+                        Sourcing, trading, and distribution of packaged foods, processed items, staple commodities, and wholesale food supplies for retailers and institutions.
+                    </p>
+                    <ul class="mt-4 space-y-1.5 text-xs text-white/60">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Packaged & processed food products</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Agricultural food commodities</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Staple food products</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-white/40 text-[10px]"></i> Wholesale & institutional food supply</li>
+                    </ul>
+                    <button onclick="openModal('food')" 
+                            class="learn-more-btn mt-5 self-start flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/30 text-xs font-semibold text-white hover:text-white transition">
+                        <span>Learn More</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- G. General Trading & Commercial Investments (full width, with video) -->
+            <div class="glass-card rounded-3xl p-6 flex flex-col h-full border-white/10 hover:border-white/30 transition group overflow-hidden relative md:col-span-2 lg:col-span-3 min-h-[300px]">
+                <video class="sector-img" autoplay loop muted playsinline aria-hidden="true">
+                    <source src="https://www.pexels.com/download/video/854325/ " type="video/mp4">
+                </video>
+                <div class="sector-overlay"></div>
+                
+                <div class="sector-content flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-5">
+                        <span class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono tracking-wider">G / INVESTMENTS & TRADING</span>
+                        <i class="fa-solid fa-chart-line text-white/40 text-xl"></i>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6 items-start">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white mb-3">General Trading & Commercial Investments</h3>
+                            <p class="text-sm text-white/70 leading-relaxed">
+                                Beyond our core sectors, we explore general trading, B2B supply arrangements, strategic partnerships, and viable investment opportunities that align with our growth strategy.
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <span class="glass-pill px-3 py-2 rounded-xl text-xs text-white/80 flex items-center gap-2"><i class="fa-regular fa-handshake text-white/50"></i> Joint ventures</span>
+                            <span class="glass-pill px-3 py-2 rounded-xl text-xs text-white/80 flex items-center gap-2"><i class="fa-solid fa-store text-white/50"></i> B2B supply</span>
+                            <span class="glass-pill px-3 py-2 rounded-xl text-xs text-white/80 flex items-center gap-2"><i class="fa-solid fa-globe text-white/50"></i> Market development</span>
+                            <span class="glass-pill px-3 py-2 rounded-xl text-xs text-white/80 flex items-center gap-2"><i class="fa-solid fa-lightbulb text-white/50"></i> Strategic partnerships</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-white/10 flex flex-wrap items-center gap-4 text-xs text-white/50">
+                        <span><i class="fa-solid fa-check-circle mr-1.5 text-white/30"></i> General trading & merchandise supply</span>
+                        <span><i class="fa-solid fa-check-circle mr-1.5 text-white/30"></i> Commercial procurement</span>
+                        <span><i class="fa-solid fa-check-circle mr-1.5 text-white/30"></i> New market identification</span>
+                    </div>
+                    <button onclick="openModal('trading')" 
+                            class="learn-more-btn mt-6 self-start flex items-center gap-2 px-6 py-3 rounded-full border border-white/30 text-xs font-semibold text-white hover:text-white transition">
+                        <span>Learn More</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- small note / CTA -->
+        <div class="mt-12 text-center text-sm text-white/40 font-mono">
+            <i class="fa-regular fa-circle-check mr-2"></i> All sectors operate under OSMUT Construction and Investment — committed to quality, integrity, and sustainable growth.
+        </div>
+    </section>
+
+    <!-- ========== MODAL OVERLAY ========== -->
+    <div id="sectorModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 md:p-8">
+        <!-- Backdrop -->
+        <div class="modal-backdrop absolute inset-0" onclick="closeModal()"></div>
+        
+        <!-- Modal Panel -->
+        <div id="modalPanel" class="modal-panel relative w-full max-w-3xl rounded-3xl p-6 md:p-10 transform scale-95 opacity-0 transition-all duration-300 ease-out">
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="modal-close-btn absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center text-white/80 hover:text-white z-20">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <!-- Dynamic Content Container -->
+            <div id="modalContent" class="modal-scroll">
+                <!-- Content will be injected here via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== FOOTER / CONTACT SECTION ========== -->
+    <footer id="contact" class="py-20 px-4 md:px-8 max-w-7xl mx-auto border-t border-white/10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-7 space-y-6">
+                <span class="text-xs font-mono text-white/50 tracking-wider block">(04) Get In Touch</span>
+                <h2 class="text-3xl sm:text-5xl font-light leading-tight text-white">
+                    Ready to build your next <br>
+                    <span class="font-bold">landmark investment?</span>
+                </h2>
+                <p class="text-sm text-mutedText max-w-lg leading-relaxed">
+                    Connect with our engineering and commercial export team in Ghana. Let's discuss partnership opportunities.
+                </p>
+            </div>
+
+            <div class="lg:col-span-5 glass-card p-8 rounded-3xl space-y-6">
+                <div>
+                    <label class="block text-xs font-mono text-white/70 mb-2 uppercase">Your Name</label>
+                    <input type="text" placeholder="Name" class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono text-white/70 mb-2 uppercase">Email Address</label>
+                    <input type="email" placeholder="Email" class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono text-white/70 mb-2 uppercase">Project Brief / Inquiry</label>
+                    <textarea rows="3" placeholder="Tell us about your project requirements..." class="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition"></textarea>
+                </div>
+                <button type="button" onclick="handleFormSubmit()" class="w-full bg-white text-darkBg py-4 rounded-full font-bold text-sm tracking-wide hover:bg-white/90 transition shadow-lg flex items-center justify-center gap-2">
+                    <span>SEND INQUIRY</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+                <p id="form-msg" class="text-xs text-center text-emerald-400 hidden">Thank you! Your message has been submitted successfully.</p>
+            </div>
+        </div>
+
+        <div class="mt-20 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center text-xs text-mutedText gap-4">
+            <p>© 2026 OSMUT Construction & Investment. All rights reserved.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-white transition">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition">Terms of Service</a>
+                <a href="#" class="hover:text-white transition">Accra, Ghana</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================================
+        // MOBILE MENU TOGGLE
+        // ============================================================
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenuPanel = document.getElementById('mobileMenuPanel');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        const body = document.body;
+
+        function toggleMobileMenu() {
+            const isOpen = mobileMenuPanel.classList.contains('open');
+            if (isOpen) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        }
+
+        function openMobileMenu() {
+            mobileMenuPanel.classList.add('open');
+            mobileMenuOverlay.classList.add('open');
+            mobileMenuBtn.classList.add('active');
+            body.classList.add('menu-open');
+            mobileMenuBtn.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeMobileMenu() {
+            mobileMenuPanel.classList.remove('open');
+            mobileMenuOverlay.classList.remove('open');
+            mobileMenuBtn.classList.remove('active');
+            body.classList.remove('menu-open');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && mobileMenuPanel.classList.contains('open')) {
+                closeMobileMenu();
+            }
+        });
+
+        // Close mobile menu when a nav link is clicked
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                closeMobileMenu();
+            });
+        });
+
+        // Close menu when resizing to desktop
+        window.addEventListener('resize', function () {
+            if (window.innerWidth >= 768 && mobileMenuPanel.classList.contains('open')) {
+                closeMobileMenu();
+            }
+        });
+
+        // ============================================================
+        // SECTOR DETAILS DATA (bulky information for each sector)
+        // ============================================================
+        const sectorData = {
+            construction: {
+                title: 'Construction & Infrastructure Development',
+                category: 'A / CONSTRUCTION',
+                icon: 'fa-regular fa-building',
+                description: 'We provide construction-related services designed to meet the needs of residential, commercial, and institutional clients across Ghana and beyond.',
+                detailedContent: `
+                    <p class="text-sm text-white/70 leading-relaxed mb-6">
+                        Our construction division is built on a foundation of quality workmanship, professional service, and value for money. We maintain appropriate safety and quality standards across every project, whether it's a residential development, a commercial complex, or critical civil infrastructure.
+                    </p>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-white/50 text-xs"></i> Our Construction Activities
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-white/65 mb-6">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Residential and commercial building construction</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Civil engineering and infrastructure-related works</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Building renovation, maintenance, and rehabilitation</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Construction materials sourcing and supply</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Project coordination and management</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> General construction contracting</li>
+                    </ul>
+                    <div class="glass-pill p-4 rounded-2xl text-xs text-white/60 leading-relaxed">
+                        <strong class="text-white/90">Our commitment:</strong> To deliver quality workmanship, professional service, and value for money while maintaining appropriate safety and quality standards.
+                    </div>
+                `
+            },
+            trade: {
+                title: 'Import & Export of General Goods',
+                category: 'B / TRADE',
+                icon: 'fa-solid fa-ship',
+                description: 'OSMUT engages in the import and export of general merchandise, connecting suppliers, manufacturers, distributors, and buyers across different markets.',
+                detailedContent: `
+                    <p class="text-sm text-white/70 leading-relaxed mb-6">
+                        Our trading activities cover a broad range of commercial products to serve businesses, retailers, wholesalers, institutions, and individual customers. We seek to establish dependable trading relationships built on trust, transparency, and mutual benefit.
+                    </p>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-white/50 text-xs"></i> Our Trading Services
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-white/65 mb-6">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> General merchandise import and export</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> International sourcing and procurement</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Wholesale and distribution of selected goods</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Supplier and buyer relationship development</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Commercial trading and product supply</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Identification of new domestic and international market opportunities</li>
+                    </ul>
+                    <div class="glass-pill p-4 rounded-2xl text-xs text-white/60 leading-relaxed">
+                        We connect markets and create opportunities for businesses in Ghana and international markets through reliable supply chains and strategic partnerships.
+                    </div>
+                `
+            },
+            agriculture: {
+                title: 'Agriculture & Agricultural Products',
+                category: 'C / AGRIBUSINESS',
+                icon: 'fa-solid fa-seedling',
+                description: 'We recognize the importance of agriculture to economic development, food security, and employment creation.',
+                detailedContent: `
+                    <p class="text-sm text-white/70 leading-relaxed mb-6">
+                        Our agricultural business focuses on agricultural products, farm supplies, and opportunities across the agricultural value chain. We aim to support farmers, agricultural businesses, distributors, and other stakeholders by improving access to relevant products and markets.
+                    </p>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-white/50 text-xs"></i> Our Agricultural Activities
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-white/65 mb-6">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Trading in agricultural products and commodities</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Sourcing and distribution of farm inputs</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Supply of agricultural materials and equipment</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Agricultural produce procurement and marketing</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Development of agricultural trading partnerships</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Exploration of agricultural investment opportunities</li>
+                    </ul>
+                    <div class="glass-pill p-4 rounded-2xl text-xs text-white/60 leading-relaxed">
+                        We contribute to food security and employment creation by strengthening agricultural value chains and connecting producers with markets.
+                    </div>
+                `
+            },
+            equipment: {
+                title: 'Farm Materials, Inputs & Equipment',
+                category: 'D / EQUIPMENT',
+                icon: 'fa-solid fa-tractor',
+                description: 'We supply and trade in farm materials and related agricultural supplies to support farming activities and agricultural productivity.',
+                detailedContent: `
+                    <p class="text-sm text-white/70 leading-relaxed mb-6">
+                        Our objective is to connect customers with suitable agricultural supplies that support efficient and productive farming operations. We understand that the right equipment and materials are essential for agricultural success.
+                    </p>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-white/50 text-xs"></i> Product Categories
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-white/65 mb-6">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Farming tools and equipment</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Irrigation materials and accessories</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Agricultural implements</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Farm maintenance supplies</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Crop production materials</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Other agricultural inputs and consumables</li>
+                    </ul>
+                    <div class="glass-pill p-4 rounded-2xl text-xs text-white/60 leading-relaxed">
+                        We help farmers and agricultural enterprises access the tools and materials they need to increase productivity and improve their operations.
+                    </div>
+                `
+            },
+            cosmetics: {
+                title: 'Cosmetics & Personal Care Products',
+                category: 'E / COSMETICS',
+                icon: 'fa-solid fa-spa',
+                description: 'OSMUT participates in the trading and distribution of cosmetics and personal care products for retail, wholesale, and commercial markets.',
+                detailedContent: `
+                    <p class="text-sm text-white/70 leading-relaxed mb-6">
+                        We aim to work with reputable suppliers and provide access to products that meet applicable quality, safety, and regulatory requirements. Our cosmetics division serves retailers, wholesalers, and commercial markets with a diverse range of products.
+                    </p>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-white/50 text-xs"></i> Product Categories
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-white/65 mb-6">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Beauty and skincare products</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Haircare products</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Personal hygiene products</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Beauty accessories</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Cosmetic products and related merchandise</li>
+                    </ul>
+                    <div class="glass-pill p-4 rounded-2xl text-xs text-white/60 leading-relaxed">
+                        We are committed to quality and safety, working only with suppliers who meet our standards for product excellence and regulatory compliance.
+                    </div>
+                `
+            },
+            food: {
+                title: 'Food Products & Commodities',
+                category: 'F / FOOD',
+                icon: 'fa-solid fa-bowl-food',
+                description: 'We engage in the sourcing, trading, import, export, and distribution of food products and related commodities.',
+                detailedContent: `
+                    <p class="text-sm text-white/70 leading-relaxed mb-6">
+                        We seek to build reliable supply relationships that support retailers, wholesalers, distributors, food businesses, and institutional buyers. Our food division ensures consistent supply of quality products to meet the demands of diverse markets.
+                    </p>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-white/50 text-xs"></i> Our Food Business Covers
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-white/65 mb-6">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Packaged food products</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Processed food items</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Agricultural food commodities</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Staple food products</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Wholesale food supplies</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Other food-related commercial products</li>
+                    </ul>
+                    <div class="glass-pill p-4 rounded-2xl text-xs text-white/60 leading-relaxed">
+                        We support food security and reliable supply chains by connecting producers and manufacturers with retailers and institutional buyers.
+                    </div>
+                `
+            },
+            trading: {
+                title: 'General Trading & Commercial Investments',
+                category: 'G / INVESTMENTS & TRADING',
+                icon: 'fa-solid fa-chart-line',
+                description: 'Beyond our principal sectors, OSMUT explores additional commercial opportunities that align with our business objectives and growth strategy.',
+                detailedContent: `
+                    <p class="text-sm text-white/70 leading-relaxed mb-6">
+                        We remain open to partnerships that create shared value, encourage innovation, and support sustainable business growth. Our diversified business model enables us to explore emerging opportunities, build strategic partnerships, and contribute to economic growth.
+                    </p>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-white/50 text-xs"></i> Our Activities Include
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-white/65 mb-6">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> General trading and merchandise supply</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Commercial procurement</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Business-to-business supply arrangements</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Strategic partnerships and joint ventures</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> New market development</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-white/30 text-xs mt-1"></i> Identification of viable investment opportunities</li>
+                    </ul>
+                    <div class="glass-pill p-4 rounded-2xl text-xs text-white/60 leading-relaxed">
+                        <strong class="text-white/90">Our vision:</strong> To become a trusted and respected diversified business group recognized for excellence in construction, international trade, agriculture, and strategic investments across Ghana and international markets.
+                    </div>
+                `
+            }
+        };
+
+        // ============================================================
+        // MODAL OPEN / CLOSE FUNCTIONS
+        // ============================================================
+        const modal = document.getElementById('sectorModal');
+        const modalPanel = document.getElementById('modalPanel');
+        const modalContent = document.getElementById('modalContent');
+
+        function openModal(sectorKey) {
+            const data = sectorData[sectorKey];
+            if (!data) return;
+
+            // Inject dynamic content
+            modalContent.innerHTML = `
+                <div class="flex items-start gap-3 mb-1">
+                    <span class="glass-pill px-3 py-1 rounded-full text-[10px] font-mono tracking-wider text-white/70">${data.category}</span>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white mt-3 mb-2 flex items-center gap-3">
+                    <i class="${data.icon} text-white/40 text-xl hidden sm:block"></i>
+                    ${data.title}
+                </h2>
+                <p class="text-sm text-white/60 leading-relaxed mb-6 border-l-2 border-white/20 pl-4">
+                    ${data.description}
+                </p>
+                <div class="h-px w-full bg-gradient-to-r from-white/20 to-transparent mb-6"></div>
+                ${data.detailedContent}
+                <div class="mt-8 pt-6 border-t border-white/10 flex justify-end">
+                    <button onclick="closeModal()" class="px-6 py-2.5 rounded-full bg-white text-darkBg font-semibold text-xs tracking-wide hover:bg-white/90 transition">
+                        Close
+                    </button>
+                </div>
+            `;
+
+            // Show modal with smooth animation
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            body.style.overflow = 'hidden';
+
+            // Trigger animation
+            requestAnimationFrame(() => {
+                modalPanel.classList.remove('scale-95', 'opacity-0');
+                modalPanel.classList.add('scale-100', 'opacity-100');
+            });
+
+            // Scroll modal content to top
+            modalContent.scrollTop = 0;
+        }
+
+        function closeModal() {
+            modalPanel.classList.remove('scale-100', 'opacity-100');
+            modalPanel.classList.add('scale-95', 'opacity-0');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                body.style.overflow = '';
+            }, 300);
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+
+        // ============================================================
+        // FORM HANDLER
+        // ============================================================
+        function handleFormSubmit() {
+            const msg = document.getElementById('form-msg');
+            msg.classList.remove('hidden');
+            setTimeout(() => {
+                msg.classList.add('hidden');
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
