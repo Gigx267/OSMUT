@@ -151,7 +151,7 @@
             top: 0;
             right: 0;
             bottom: 0;
-            width: 100%;
+            width: min(88vw, 380px);
             max-width: 380px;
             z-index: 46;
             background: rgba(23, 24, 28, 0.97);
@@ -233,6 +233,110 @@
         .mobile-menu-panel.open .mobile-menu-footer {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        @media (max-width: 767px) {
+            header {
+                padding-top: max(0.75rem, env(safe-area-inset-top));
+                padding-bottom: 0.75rem;
+            }
+
+            .mobile-menu-panel {
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+
+            #home {
+                min-height: 100svh;
+                padding-top: 6rem;
+                padding-bottom: 1.5rem;
+            }
+
+            #home > div:first-of-type {
+                top: 5rem;
+                bottom: 0.75rem;
+                border-radius: 1.5rem;
+            }
+
+            #home h1 {
+                font-size: clamp(2.15rem, 9vw, 3.25rem);
+                line-height: 1.08;
+                letter-spacing: -0.04em;
+            }
+
+            #home h1 br {
+                display: none;
+            }
+
+            #home > div:nth-of-type(2) {
+                padding-top: 1rem;
+            }
+
+            #home .lg\:col-span-5 {
+                gap: 0.5rem;
+            }
+
+            #home .lg\:col-span-5 button {
+                padding: 0.55rem 0.85rem;
+                font-size: 0.75rem;
+            }
+
+            #home .grid.grid-cols-1.sm\:grid-cols-2 > div {
+                min-width: 0;
+                padding: 0.65rem;
+            }
+
+            #home .grid.grid-cols-1.sm\:grid-cols-2 > div p {
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+            }
+
+            #about,
+            #sectors,
+            #contact {
+                padding-top: 4rem;
+                padding-bottom: 4rem;
+            }
+
+            #about h2 {
+                font-size: clamp(1.75rem, 7vw, 2.5rem);
+                line-height: 1.25;
+            }
+
+            #sectors .glass-card {
+                height: 21rem;
+            }
+
+            #contact .glass-card {
+                padding: 1.25rem;
+            }
+
+            footer > div:last-child {
+                align-items: flex-start;
+            }
+
+            footer > div:last-child > div {
+                flex-wrap: wrap;
+                gap: 0.75rem 1.25rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .mobile-menu-panel > div {
+                padding-left: 1.25rem;
+                padding-right: 1.25rem;
+            }
+
+            #home .grid.grid-cols-1.sm\:grid-cols-2 > div {
+                gap: 0.6rem;
+            }
+
+            #home .grid.grid-cols-1.sm\:grid-cols-2 > div > div:first-child {
+                width: 4rem;
+                height: 3.5rem;
+            }
         }
     </style>
 </head>
